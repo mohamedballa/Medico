@@ -42,9 +42,9 @@ export default {
 
     },
       fontFamily:{
-        Headline : [ "Spectral", "serif"],
-        Text: ["Spectral", "serif"],
-        Nav: ["Karla","sans-serif"]
+        SpecHeadline : [ "Spectral", "serif"],
+        SpecText: ["Spectral", "serif"],
+        KarNav: ["Karla","sans-serif"]
       }
     },
   },
