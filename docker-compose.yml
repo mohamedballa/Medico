@@ -8,9 +8,10 @@ services:
         image: sail-8.4/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
-        ports:
+        ports:    
             - '${APP_PORT:-80}:80'
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+        restart: always
         environment:
             WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
@@ -23,16 +24,16 @@ services:
             - sail
         depends_on:
             - pgsql
-            - ngnix
     pgsql:
         image: 'postgres:17' # Compatible with Docker 20.10.8
         ports:
             - '${FORWARD_DB_PORT:-5432}:5432'
+        restart: always
         environment:
             PGPASSWORD: '${DB_PASSWORD:-secret}'
             POSTGRES_DB: '${DB_DATABASE}'
             POSTGRES_USER: '${DB_USERNAME}'
-            POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+            POSTGRES_PASSWORD: '${DB_PASSWORD}'
         volumes:
             - 'sail-pgsql:/var/lib/postgresql/data'
         networks:
@@ -46,6 +47,7 @@ services:
         image: 'nginx:alpine'
         ports:
             - '${NGINX_PORT:-8080}:80'
+        restart: always
         volumes:
             - '.:/var/www/html'
             - './docker/nginx/conf.d:/etc/nginx/conf.d'
