@@ -46,6 +46,29 @@ local environment is mac OSX 10.13 the app is run in Docker v 20.10
 - using AI to debug (Chatgpt, Grok)
 
 
+## Building the website
+
+divided the building process into frontend and backend
+
+# FrontEnd
+
+    - Build the Pages , this include :
+        - Layout
+        - Home page
+        - Syllabus page
+        - About page
+        - signup
+        - Login
+        - Dashboard
+        - Module
+        - Admin (used to pass the data)
+
+
+
+
+
+
+
 ## Usage Guide
 
 
