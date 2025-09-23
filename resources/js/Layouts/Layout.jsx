@@ -8,7 +8,7 @@ export default function Layout({children}){
                     <div>
                         
                         <div>
-                            <img src="" alt="" />
+                            {/* <img src="" alt="" /> */}
                         </div>
                         <div>
                            <Link href="/">Home</Link>
@@ -16,8 +16,8 @@ export default function Layout({children}){
                            <Link href="/About">About</Link>
                         </div>
                         <div>
-                            <button>Signup</button>
-                            <button>Login</button>
+                            <Link href="/Signup" >Signup</Link>
+                            <Link href="/Login" >Login</Link>
                         </div>
                    
                     </div>
