@@ -1,36 +1,20 @@
 import { Link } from "@inertiajs/react";
 import Logo from '../assets/images/logo.png';
-import Icon  from '../assets/icons/ei_arrow-right.svg?react';
+import NavLink from "../components/NavLink";
+import Navbar from "../components/Navbar";
+import Nav from "../components/Nav";
 
 
 export default function Layout({children}){
     return (
         <>
-            <header>
-                <nav>
-                    <div>
-                        
-                        <div>
-                            <img src={Logo} alt="Logo" className="" />
-                            <Icon className="w-9 text-white bg-primary" />
-                        </div>
-                        <div>
-                           <Link href="/">Home</Link>
-                           <Link href="/Syllabus">Syllabus</Link>
-                           <Link href="/About">About</Link>
-                        </div>
-                        <div>
-                            <Link href="/Signup" >Signup</Link>
-                            <Link href="/Login" >Login</Link>
-                        </div>
-                   
-                    </div>
-                </nav>
-            </header>
+            <div className="">
+                    <Nav  />
 
-            <main>
-                {children}
-            </main>
+                    <main>
+                        {children}
+                    </main>
+            </div> 
         </>
     )
 }
