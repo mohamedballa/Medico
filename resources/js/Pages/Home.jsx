@@ -8,9 +8,13 @@ export default function Home() {
     const component =  usePage();
     return (
         <> 
-        <div className="bg-white space-y-20 mt-20">
             <Head  title="Home"  />
-            <div className="">
+            
+            
+             <div className=" bg-white space-y-20 mt-48 ">
+
+
+            <div className=" ">
                 <img src={Hero}  className="max-w-full" />
                 <div className="relative">
 
@@ -21,7 +25,7 @@ export default function Home() {
             <h1 className=" bg-red-300 text-9xl  w-full sm:w-1/4 md:w-1/2 lg:w-3/4 ">
                 Home
             </h1>
-        </div>  
+                </div>   
         </>
     );
 }

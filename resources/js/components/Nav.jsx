@@ -1,33 +1,88 @@
+import { useState } from "react";
 import { Link } from "@inertiajs/react";
 import Logo from '../assets/images/logo.png';
 import NavLink from "../components/NavLink";
+import  close   from "../assets/icons/close.svg";
+import  menu   from "../assets/icons/menu.svg";
 
 export default function Nav(){
 
-
+    const [open, setOpen] = useState(false);
 
 
         return(
 
-            <header className=" bg-white p-3 text-Headline border-gray-300  border-b-2 shadow-lg font-SpecHeadline font-light text-xl">
+            <header className=" fixed top-0 left-0 w-full bg-white  text-Headline border-gray-300  border-b-2 shadow-lg font-SpecHeadline font-light text-xl z-50">
                 <nav className="">
-                    <div className=" m-5  flex items-center justify-between ">
-                        
-                        <div className=" flex-shrink-0">
-                            <img src={Logo} alt="Logo" className="h-10 w-auto" />
+                    <div className="m-5  flex items-center justify-between">
+                        {/* Logo */}
+
+                        <div className=" flex-shrink-0 ">
+                            <Link href="/">
+                        <img src={Logo} alt="Logo" className="h-9 md:h-12" />
+                            </Link>
                         </div>
-                        <div className=" align-items-center flex gap-20 ">
-                           <NavLink  href="/">Home</NavLink>
-                           <NavLink  href="/Syllabus">Syllabus</NavLink>
-                           <NavLink  href="/About">About</NavLink>
+                        {/* Desktop */}
+                        <div className="hidden lg:flex flex-1 items-center justify-between " >
+
+                            <div className="flex gap-16 mx-auto ">
+                                <NavLink  href="/">Home</NavLink>
+                                <NavLink  href="/Syllabus">Syllabus</NavLink>
+                                <NavLink  href="/About">About</NavLink>
+                            </div>
+                            <div className="flex gap-8  mr-10  ">
+                                <Link className="hover:text-primary" href="/Signup" >Signup</Link>
+                                <Link className="hover:text-primary" href="/Login" >Login</Link>
+                            </div>
+
                         </div>
-                        <div className=" flex space-x-9">
-                            <Link className="hover:text-primary" href="/Signup" >Signup</Link>
-                            <Link className="hover:text-primary" href="/Login" >Login</Link>
+
+
+                        {/* Mobile */}
+                        <div className="lg:hidden">
+                            <button
+                                onClick={() => setOpen(!open)}
+                                classNaame=""
+                                >
+                                {open ?  <img src={close} className="w-12 md:w-16 "   /> : <img src={menu} className="w-12 md:16" />}
+                            </button>
                         </div>
-                   
                     </div>
+                            {open && (
+                                <div className="lg:hidden  bg-white border-t border-gray-200 divide-y shadow-md pb-4">
+                                    <div className="flex flex-col mt-4 space-y-4 ">
+                                            
+                                        <div className="border-b border-gray-300 pb-4 text-center">
+                                          <NavLink  href="/" className="">Home</NavLink>
+                                        </div>
+                                        <div className="border-b border-gray-300 pb-4 text-center">
+                                          <NavLink  href="/Syllabus">Syllabus</NavLink>
+                                        </div>
+                                        <div className=" text-center">
+                                          <NavLink  href="/About">About</NavLink> 
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-around mt-4 mb-1">
+                                          <Link className="hover:text-primary mt-4" href="/Signup" >Signup</Link>
+                                          <Link className="hover:text-primary mt-4" href="/Login" >Login</Link> 
+                                    </div>
+                                </div>
+                            )}
                 </nav>
             </header> 
         
         )}
+
+
+    //     <div className=" flex-shrink-0">
+    //     <img src={Logo} alt="Logo" className="h-10 w-auto" />
+    // </div>
+    // <div className=" align-items-center flex gap-20 ">
+    //    <NavLink  href="/">Home</NavLink>
+    //    <NavLink  href="/Syllabus">Syllabus</NavLink>
+    //    <NavLink  href="/About">About</NavLink>
+    // </div>
+    // <div className=" flex space-x-9">
+    //     <Link className="hover:text-primary" href="/Signup" >Signup</Link>
+    //     <Link className="hover:text-primary" href="/Login" >Login</Link>
+    // </div>
