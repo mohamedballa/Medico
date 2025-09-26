@@ -11,7 +11,7 @@ export default function Home() {
             <Head  title="Home"  />
             
             
-             <div className=" bg-white space-y-20 mt-48 ">
+             <div className=" bg-white space-y-20 mt-48 min-h-screen ">
 
 
             <div className=" ">

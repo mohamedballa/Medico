@@ -18,7 +18,7 @@ export default {
       Buttontext: "#fffffe",
       
       Background: "#3D3D3D",
-      Backggroundfooter: "#272932",
+      Backgroundfooter: "#272932",
 
       darkblue: "#094067",
 
