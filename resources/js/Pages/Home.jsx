@@ -1,6 +1,13 @@
 import {usePage , Head, Link } from "@inertiajs/react";
-import Hero from '../assets/icons/Hero-large.svg';
-import Button from '../assets/icons/Button.svg';
+import Hero from '../assets/images/Mobile_Hero.png';
+import MHButton from '../assets/images/MHButton.png';
+import MSyllabus from '../assets/images/MSyllabus.png';
+import HSyllabus from '../assets/images/HSyllabus.png';
+import SButton from '../assets/images/SButton.png';
+import MButton from '../assets/images/MButton.png';
+import Subscribtions from '../assets/images/Subscribtions.png';
+import Subscribe from '../assets/images/Subscribe.png';
+import Signup from '../assets/images/Signup.png';
 
 
 export default function Home() {
@@ -10,22 +17,68 @@ export default function Home() {
         <> 
             <Head  title="Home"  />
             
-            
-             <div className=" bg-white space-y-20 mt-48 min-h-screen ">
+            {/* Mobile  */}
+             <div className="lg:hidden md:hidden bg-white space-y-20 mt-44 min-h-screen ">
+                
 
-
-            <div className=" ">
-                <img src={Hero}  className="max-w-full" />
-                <div className="relative">
-
-                <Link href="#" className="absolute bottom-1/2 flex items-end mb-14 ml-12"> <img src={Button} alt="Button" className="hover:brightness-75" /> </Link>
+                <div className="relative w-full">
+                   
+                    <img src={Hero} className="w-full h-auto object-contain" alt="Hero" />
+                    
+                    <Link href="/Demo">
+                        <img src={MHButton} alt="Button" className="absolute bottom-12 left-10 w-32 " />
+                    </Link>
+                    
                 </div>
-            </div>
 
-            <h1 className=" bg-red-300 text-9xl  w-full sm:w-1/4 md:w-1/2 lg:w-3/4 ">
-                Home
-            </h1>
-                </div>   
+
+                <div className="relative w-full">
+                    <img  src={HSyllabus} alt="Syllabus" />
+
+                    <Link href="Syllabus">
+                       <img  src={SButton} alt="Button" className="w-28 absolute bottom-[7%] left-[33%]" />
+                    </Link>
+                </div>
+                <div className="relative w-full">
+                    <img  src={MSyllabus} alt="Module" className="" />
+
+                    <Link href="/Demo">
+                     <img src={MButton} alt="Button" className="absolute bottom-[7%] left-[33%] w-32 "  />
+                    </Link>
+                </div>
+
+
+
+                <div className="relative w-full">
+                    <img src={Subscribtions} alt="subscritptions" className=" mb-20"  />
+                    <Link href="/Subscribe">
+                     <img src={Subscribe} alt="Button" className="absolute top-[55%] left-[33%] w-32 "  />
+                    </Link>
+
+                    <Link href="/Signup">
+                     <img src={Signup} alt="Button" className="absolute bottom-[10%] left-[36%]   w-28"  />
+                    </Link>
+                </div>
+
+            
+             </div>  
+
+
+              {/* Tablet  */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+              {/* Desktop  */}
         </>
     );
 }

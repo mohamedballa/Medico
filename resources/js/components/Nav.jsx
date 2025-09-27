@@ -42,7 +42,7 @@ export default function Nav(){
                         <div className="lg:hidden">
                             <button
                                 onClick={() => setOpen(!open)}
-                                classNaame=""
+                                className=""
                                 >
                                 {open ?  <img src={close} className="w-12 md:w-16 "   /> : <img src={menu} className="w-12 md:16" />}
                             </button>
