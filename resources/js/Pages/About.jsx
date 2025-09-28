@@ -1,16 +1,22 @@
 import {usePage , Head, Link } from "@inertiajs/react";
-
+import MedicoMissionstatement from  '../assets/images/Medico-Mission-statement.png';
 
 
 
 export default function About() {
     return (
-        <div className="min-h-screen">
-
+        <>
         <Head title="About" />
-        <h1 className=" bg-red-300 text-9xl  w-full sm:w-1/4 md:w-1/2 lg:w-3/4 mt-48">
+        <div className=" bg-primary min-h-screen">
+        <div className=" bg-primary h-[200px]"></div>
+
+        {/* <h1 className=" text-9xl  w-full sm:w-1/4 md:w-1/2 lg:w-3/4 ">
             About
-        </h1>
+        </h1> */}
+        <div>
+            <img  src={MedicoMissionstatement} />
         </div>
+        </div>
+        </>
     );
 }

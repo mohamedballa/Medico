@@ -9,7 +9,7 @@ export default function Nav(){
 
     const [open, setOpen] = useState(false);
 
-
+   const handleClose = () => setOpen(false);
         return(
 
             <header className=" fixed top-0 left-0 w-full bg-white  text-Headline border-gray-300  border-b-2 shadow-lg font-SpecHeadline font-light text-xl z-50">
@@ -53,18 +53,18 @@ export default function Nav(){
                                     <div className="flex flex-col mt-4 space-y-4 ">
                                             
                                         <div className="border-b border-gray-300 pb-4 text-center">
-                                          <NavLink  href="/" className="">Home</NavLink>
+                                          <NavLink  href="/" className="" onClick={handleClose} >Home</NavLink>
                                         </div>
                                         <div className="border-b border-gray-300 pb-4 text-center">
-                                          <NavLink  href="/Syllabus">Syllabus</NavLink>
+                                          <NavLink  href="/Syllabus" onClick={handleClose} >Syllabus</NavLink>
                                         </div>
                                         <div className=" text-center">
-                                          <NavLink  href="/About">About</NavLink> 
+                                          <NavLink  href="/About" onClick={handleClose} >About</NavLink> 
                                         </div>
                                     </div>
                                     <div className="flex justify-around mt-4 mb-1">
-                                          <Link className="hover:text-primary mt-4" href="/Signup" >Signup</Link>
-                                          <Link className="hover:text-primary mt-4" href="/Login" >Login</Link> 
+                                          <Link className="hover:text-primary mt-4" href="/Signup" onClick={handleClose} >Signup</Link>
+                                          <Link className="hover:text-primary mt-4" href="/Login" onClick={handleClose} >Login</Link> 
                                     </div>
                                 </div>
                             )}
@@ -74,15 +74,4 @@ export default function Nav(){
         )}
 
 
-    //     <div className=" flex-shrink-0">
-    //     <img src={Logo} alt="Logo" className="h-10 w-auto" />
-    // </div>
-    // <div className=" align-items-center flex gap-20 ">
-    //    <NavLink  href="/">Home</NavLink>
-    //    <NavLink  href="/Syllabus">Syllabus</NavLink>
-    //    <NavLink  href="/About">About</NavLink>
-    // </div>
-    // <div className=" flex space-x-9">
-    //     <Link className="hover:text-primary" href="/Signup" >Signup</Link>
-    //     <Link className="hover:text-primary" href="/Login" >Login</Link>
-    // </div>
+ 

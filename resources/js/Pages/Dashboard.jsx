@@ -6,9 +6,13 @@ export default function Dashboard() {
     return (
         <>
         <Head title="Dashboard" />
-        <h1 className=" bg-red-300 text-9xl  w-full sm:w-1/4 md:w-1/2 lg:w-3/4">
+        <div className="bg-primary min-h-screen">
+        <div className=" bg-primary h-[150px]"></div>
+        <h1 className=" pl-16 text-3xl mb-10 text-white font-SpecHeadline">
             Dashboard
         </h1>
+        <hr className="border-gray-300 border-t" />
+        </div>
         </>
     );
 }

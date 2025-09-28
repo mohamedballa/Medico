@@ -1,6 +1,6 @@
 import { Link, usePage } from "@inertiajs/react";
 
-export default function NavLink({ href, children }) {
+export default function NavLink({ href, children, onClick }) {
   const { url } = usePage();
 
   const isActive = url === href;
@@ -8,6 +8,7 @@ export default function NavLink({ href, children }) {
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={`
        relative
        text-Headline
