@@ -4,6 +4,7 @@ import Logo from "../assets/images/logo.png";
 import { ReactComponent as MenuIcon } from "../assets/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "../assets/icons/close.svg";
 
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 

@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     public function showSignup()
     {
-        return Inertia::render('/Signup');
+        return Inertia::render('Signup');
     }
 
     public function signup(Request $request)
@@ -31,19 +31,21 @@ class AuthController extends Controller
 
     public function showLogin()
     {
-        return Inertia::render('/Login');
+        return Inertia::render('Login');
     }
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+       $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        $remember = $request->has('remember');
+        
+        if (Auth::attempt($request->only('email','password'),$remember)) {
             $request->session()->regenerate();
-            return redirect()->route('dashboard');
+            return redirect()->intended('dashboard');
         }
 
         return back()->withErrors([
@@ -53,6 +55,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+       
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

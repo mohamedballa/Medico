@@ -1,15 +1,20 @@
 import { useState } from "react";
-import { Link } from "@inertiajs/react";
+import { Link , usePage } from "@inertiajs/react";
 import Logo from '../assets/images/logo.png';
 import NavLink from "../components/NavLink";
 import  close   from "../assets/icons/close.svg";
 import  menu   from "../assets/icons/menu.svg";
+import { route } from "ziggy-js";
+
 
 export default function Nav(){
 
     const [open, setOpen] = useState(false);
 
    const handleClose = () => setOpen(false);
+
+   const{ auth } = usePage().props;
+
         return(
 
             <header className=" fixed top-0 left-0 w-full bg-white  text-Headline border-gray-300  border-b-2 shadow-lg font-SpecHeadline font-light text-xl z-50">
@@ -31,9 +36,14 @@ export default function Nav(){
                                 <NavLink  href="/About">About</NavLink>
                             </div>
                             <div className="flex gap-8  mr-10  ">
-                                <Link className="hover:text-primary" href="/Signup" >Signup</Link>
+                                {auth.user ? (
+                                    <>
+                                    <Link href="/dashboard" className="hover:text-primary">Dashboard</Link>
+                                    <Link href="/logout" method="post" as="button" className="hover:text-primary">Logout</Link>
+                                    </>):(<>
+                                <Link className="hover:text-primary" href={route('signup')} >Signup</Link>
                                 <Link className="hover:text-primary" href="/Login" >Login</Link>
-                            </div>
+                            </>)}</div>
 
                         </div>
 
@@ -63,8 +73,14 @@ export default function Nav(){
                                         </div>
                                     </div>
                                     <div className="flex justify-around mt-4 mb-1">
-                                          <Link className="hover:text-primary mt-4" href="/Signup" onClick={handleClose} >Signup</Link>
-                                          <Link className="hover:text-primary mt-4" href="/Login" onClick={handleClose} >Login</Link> 
+                                    {auth.user ? (
+                                    <>
+                                    <Link href="/dashboard" className="hover:text-primary mt-4" onClick={handleClose} >Dashboard</Link>
+                                    <Link href="/logout" method="post" as="button" className="hover:text-primary mt-4" onClick={handleClose}>Logout</Link>
+                                    </>):(<>
+                                <Link className="hover:text-primary mt-4" href={route('signup')} >Signup</Link>
+                                <Link className="hover:text-primary mt-4" href="/Login" >Login</Link>
+                            </>)} 
                                     </div>
                                 </div>
                             )}

@@ -7,6 +7,7 @@
     {{-- fonts --}}
     <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@100;200;300;400;500;700&family=Karla:wght@100;200;300;400;500;700&display=swap" rel="stylesheet">
     @viteReactRefresh
+    @routes
     @vite('resources/js/app.jsx')
     @inertiaHead
 </head>
