@@ -18,7 +18,7 @@ export default function ResetPassword({ token, email }) {
       <Head title="Reset Password" />
       <div className=" bg-primary min-h-screen">
         <div className=" bg-primary h-[200px]"></div>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 w-[30%] mx-auto">
         <input
           type="email"
           value={data.email}

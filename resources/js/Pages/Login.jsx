@@ -1,5 +1,5 @@
-import {useForm, Head, Link } from "@inertiajs/react";
-
+import {useForm, Head, Link , usePage} from "@inertiajs/react";
+import { useEffect, useState } from "react";
 
 export default function Login() {
 
@@ -9,6 +9,30 @@ export default function Login() {
         remember:false,
       });
 
+      const{ flash } = usePage().props ;
+      const [flashMessage, setFlashMessage] = useState(null);
+      const [flashType, setFlashType] = useState("status"); // default green
+
+      useEffect(() => {
+        if (flash?.status) {
+            setFlashMessage(flash.status);
+            setFlashType("status");
+        } else if (flash?.error) {
+            setFlashMessage(flash.error);
+            setFlashType("error");
+        }
+
+        // Auto-clear after 5 seconds
+        if (flash?.status || flash?.error) {
+            const timer = setTimeout(() => {
+                setFlashMessage(null);
+            }, 5000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [flash]);
+
+
       const handleSubmit = (e) => {
         e.preventDefault();
         post("/login");
@@ -16,9 +40,23 @@ export default function Login() {
 
     return (
         <>
+
         <Head  title="Login" />
-        <div className=" bg-primary min-h-screen">
+        <div className=" bg-primary min-h-screen pb-5">
         <div className=" bg-primary h-[200px]"></div>
+
+       
+        {flashMessage && (
+        <div
+          className={`mb-4 text-center font-semibold ${
+           flashType === "status" ? "text-green-600 bg-white" : "text-red-600 bg-white"
+           }`}
+             >
+             {flashMessage}
+                </div>
+                  )}
+
+     
         <form onSubmit={handleSubmit} className=" mx-auto mb-64 space-y-4 ">
            <div className=" max-w-md mx-auto"> 
            <div className="mb-5 font-SpecHeadline text-white text-center font-extralight letters ]">

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -22,7 +23,11 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        $user = User::create($request->all());
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password), // <--- hash here
+        ]);
 
         Auth::login($user);
 
@@ -43,14 +48,29 @@ class AuthController extends Controller
 
         $remember = $request->has('remember');
         
-        if (Auth::attempt($request->only('email','password'),$remember)) {
-            $request->session()->regenerate();
-            return redirect()->intended('dashboard');
-        }
+        $user = \App\Models\User::where('email', $request->email)->first();
 
-        return back()->withErrors([
-            'email' => 'Invalid credentials.',
-        ]);
+        // dd([
+        //     'input_password' => $request->password,
+        //     'db_password' => $user->password,
+        //     'check' => Hash::check($request->password, $user->password),
+        // ]);
+
+
+        if (!$user) {
+            // Email not found
+            return back()->withErrors(['email' => 'This email does not exist.']);
+        }
+    
+        if (!Hash::check($request->password, $user->password)) {
+            // Password wrong
+            return back()->withErrors(['password' => 'Wrong password.']);
+        }
+        Auth::login($user, $remember);
+
+        $request->session()->regenerate();
+
+        return redirect()->intended('dashboard');
     }
 
     public function logout(Request $request)

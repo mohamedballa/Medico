@@ -14,7 +14,7 @@ export default function ForgotPassword() {
       <Head title="Forgot Password" />
       <div className=" bg-primary min-h-screen">
         <div className=" bg-primary h-[200px]"></div>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 w-[25%] mx-auto ">
         <input
           type="email"
           value={data.email}
@@ -23,7 +23,7 @@ export default function ForgotPassword() {
           className="border p-2 w-full"
         />
         {errors.email && <div className="text-red-500">{errors.email}</div>}
-        <button disabled={processing} className="bg-blue-500 text-white px-4 py-2">
+        <button disabled={processing} className="bg-blue-500 text-white px-4 py-2 ">
           Send Reset Link
         </button>
       </form>

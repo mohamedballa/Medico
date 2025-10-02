@@ -38,13 +38,14 @@ export default {
       White:"fffffe",
       Hightlight:"#3da9fc",
       Secondary:"#90b4ce",
-      Tertiary:"#ef4565"
+      Tertiary:"#ef4565",
 
     },
       fontFamily:{
         SpecHeadline : [ "Spectral", "serif"],
         SpecText: ["Spectral", "serif"],
-        KarNav: ["Karla","sans-serif"]
+        KarNav: ["Karla","sans-serif"],
+        sans: ['Instrument Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       }
     },
   },

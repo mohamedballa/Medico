@@ -22,9 +22,12 @@ class PasswordResetController extends Controller
 
         $status = Password::sendResetLink($request->only('email'));
 
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+        if($status === Password::RESET_LINK_SENT){
+        return redirect()->route('login')->with('status', __($status));
+        }else
+        return back()->withErrors([
+            'email' => 'Invalid Email, Please try again !', // ❌ error flash
+        ]);
     }
 
     public function resetForm($token)
