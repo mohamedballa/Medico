@@ -11,6 +11,7 @@ export default function NavLink({ href, children, onClick }) {
       onClick={onClick}
       className={`
        relative
+       mt-4
        text-Headline
        hover:text-primary
       ${isActive ? "text-primary" : "text-Headline"}

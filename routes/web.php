@@ -5,6 +5,11 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Verified;
+use App\Models\User;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 
 //  Routes FronEnd
 
@@ -43,7 +48,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard', function () {
     return inertia('Dashboard');
-})->middleware('auth')->name('dashboard');
+})->middleware(['auth','verified'])->name('dashboard');
 
 
         // Reset Password
@@ -52,4 +57,55 @@ Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'
 Route::get('/reset-password/{token}', [PasswordResetController::class, 'resetForm'])->name('password.reset');
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])->name('password.update');
         
-        
+ 
+
+
+
+
+
+
+// Notice page - user sees this after signup
+Route::get('/email/verify', function () {
+    return Inertia::render('Auth/VerifyNotice');        // Inertia page (create below)
+})->middleware('auth')->name('verification.notice');
+
+// Signed verification link (from email)
+Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
+    $user = User::find($id);
+
+    if (!$user) {
+        abort(404);
+    }
+
+    if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+        abort(403, 'Invalid verification link.');
+    }
+
+    if ($user->hasVerifiedEmail()) {
+        return redirect()->route('login')->with('status', 'Email already verified. Please login.');
+    }
+
+    $user->markEmailAsVerified();
+    event(new Verified($user));
+
+    return redirect()->route('login')->with('status', 'Email verified successfully! You can now login.');
+})->middleware('signed')->name('verification.verify');
+
+// Resend verification email without login
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
+
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user) {
+        return back()->with('status', 'No account found with that email address.');
+    }
+
+    if ($user->hasVerifiedEmail()) {
+        return back()->with('status', 'Your email is already verified.');
+    }
+
+    $user->sendEmailVerificationNotification();
+
+    return back()->with('status', 'Verification link sent to your email!');
+})->name('verification.resend');

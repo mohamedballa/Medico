@@ -159,7 +159,7 @@ export default function Home() {
                     </Link>
 
                     <Link href="/Signup">
-                     <img src={Signup} alt="Button" className="absolute bottom-[14%] left-[67%]  w-32"  />
+                     <img src={Signup} alt="Button" className="absolute bottom-[12%] left-[66%]  w-32"  />
                     </Link>
                 </div>
 

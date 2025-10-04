@@ -26,10 +26,17 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password), // <--- hash here
+            'password' => $request->password, 
         ]);
 
         Auth::login($user);
+
+        // queue verification email
+        $user->sendEmailVerificationNotification();
+        // Logout immediately (in case it auto-logs in)
+            Auth::logout();
+        // send to verification notice
+        return redirect()->route('verification.notice');
 
         return redirect()->route('dashboard');
     }
@@ -66,8 +73,14 @@ class AuthController extends Controller
             // Password wrong
             return back()->withErrors(['password' => 'Wrong password.']);
         }
-        Auth::login($user, $remember);
 
+        if (!$user->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice')
+                ->with('status', 'Please verify your email before logging in.');
+        }
+
+
+        Auth::login($user, $request->boolean('remember'));
         $request->session()->regenerate();
 
         return redirect()->intended('dashboard');

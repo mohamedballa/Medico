@@ -38,11 +38,11 @@ export default function Nav(){
                             <div className="flex gap-8  mr-10  ">
                                 {auth.user ? (
                                     <>
-                                    <Link href="/dashboard" className="hover:text-primary">Dashboard</Link>
-                                    <Link href="/logout" method="post" as="button" className="hover:text-primary">Logout</Link>
+                                    <NavLink href="/dashboard" className="hover:text-primary">Dashboard</NavLink>
+                                    <NavLink href="/logout" method="post" as="button" className="hover:text-primary">Logout</NavLink>
                                     </>):(<>
-                                <Link className="hover:text-primary" href={route('signup')} >Signup</Link>
-                                <Link className="hover:text-primary" href="/Login" >Login</Link>
+                                <NavLink className="hover:text-primary" href="/Signup" >Signup</NavLink>
+                                <NavLink className="hover:text-primary" href="/Login" >Login</NavLink>
                             </>)}</div>
 
                         </div>
@@ -75,11 +75,11 @@ export default function Nav(){
                                     <div className="flex justify-around mt-4 mb-1">
                                     {auth.user ? (
                                     <>
-                                    <Link href="/dashboard" className="hover:text-primary mt-4" onClick={handleClose} >Dashboard</Link>
-                                    <Link href="/logout" method="post" as="button" className="hover:text-primary mt-4" onClick={handleClose}>Logout</Link>
+                                    <NavLink href="/dashboard" className="hover:text-primary " onClick={handleClose} >Dashboard</NavLink>
+                                    <NavLink href="/logout" method="post" as="button" className="hover:text-primary " onClick={handleClose}>Logout</NavLink>
                                     </>):(<>
-                                <Link className="hover:text-primary mt-4" href={route('signup')} >Signup</Link>
-                                <Link className="hover:text-primary mt-4" href="/Login" >Login</Link>
+                                <NavLink className="hover:text-primary mt-4" href="/Signup" onClick={handleClose} >Signup</NavLink>
+                                <NavLink className="hover:text-primary mt-4" href="/Login" onClick={handleClose} >Login</NavLink>
                             </>)} 
                                     </div>
                                 </div>
