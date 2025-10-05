@@ -1,13 +1,20 @@
-import { Head, usePage, Link } from "@inertiajs/react";
-import { useForm } from "@inertiajs/react";
+import { Head,useForm,  Link } from "@inertiajs/react";
+import React , {useState} from "react";
 import { route } from 'ziggy-js';
 
-export default function VerifyNotice() {
-  const { flash, auth } = usePage().props;
-  const { post, processing } = useForm();
+export default function VerifyNotice({email}) {
+  const [status , setStatus] = useState(null);
+
+  
+
+  const { post, processing ,data , setData } = useForm({
+    email:email || " "
+  });
 
   function resend() {
-    post(route('verification.resend')); // Ziggy route helper; or use '/email/verification-notification'
+    post(route('verification.resend') ,{
+      onSuccess: () => setStatus("Verification link sent to your email!"),
+    }); 
   }
 
   return (
@@ -21,10 +28,10 @@ export default function VerifyNotice() {
        
             <h1 className="text-center text-2xl mt-10">Verify your email</h1>    
             <p className="text-center m-5 text-xl ">
-          A verification link was sent to <strong>{auth.user.email}</strong>. Please click the link in that email to verify your account.
+          A verification link was sent to{" "}  <strong>{email || "your email address"}</strong>. Please check your inbox.
         </p>
-        {flash?.status && (
-          <div className="mb-4 text-green-600 text-center">{flash.status}</div>
+        {status && (
+          <div className="mb-4 text-green-600 text-center">{status}</div>
         )} 
     
         <div className="flex justify-around  items-center m-10 text-xl ">
@@ -37,7 +44,7 @@ export default function VerifyNotice() {
           </button>
         <button  className="bg-primary text-white px-4 py-2 rounded">
 
-          <Link href="/" className=" text-xl  text-white self-center">Back to Home</Link>
+          <Link href="/login" className=" text-xl  text-white self-center">Back to Login</Link>
         </button>
         </div>
       </div>

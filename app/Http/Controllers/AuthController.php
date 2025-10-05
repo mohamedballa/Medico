@@ -34,11 +34,11 @@ class AuthController extends Controller
         // queue verification email
         $user->sendEmailVerificationNotification();
         // Logout immediately (in case it auto-logs in)
-            Auth::logout();
+           Auth::logout();
         // send to verification notice
-        return redirect()->route('verification.notice');
+        return redirect()->route('verification.notice', ['email' => $user->email]);
 
-        return redirect()->route('dashboard');
+       
     }
 
     public function showLogin()

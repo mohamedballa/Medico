@@ -39,7 +39,7 @@ export default function Nav(){
                                 {auth.user ? (
                                     <>
                                     <NavLink href="/dashboard" className="hover:text-primary">Dashboard</NavLink>
-                                    <NavLink href="/logout" method="post" as="button" className="hover:text-primary">Logout</NavLink>
+                                    <Link href="/logout" method="post" as="button" className="hover:text-primary mt-4">Logout</Link>
                                     </>):(<>
                                 <NavLink className="hover:text-primary" href="/Signup" >Signup</NavLink>
                                 <NavLink className="hover:text-primary" href="/Login" >Login</NavLink>
@@ -76,7 +76,7 @@ export default function Nav(){
                                     {auth.user ? (
                                     <>
                                     <NavLink href="/dashboard" className="hover:text-primary " onClick={handleClose} >Dashboard</NavLink>
-                                    <NavLink href="/logout" method="post" as="button" className="hover:text-primary " onClick={handleClose}>Logout</NavLink>
+                                    <Link href="/logout" method="post" as="button" className="hover:text-primary mt-4 ">Logout</Link>
                                     </>):(<>
                                 <NavLink className="hover:text-primary mt-4" href="/Signup" onClick={handleClose} >Signup</NavLink>
                                 <NavLink className="hover:text-primary mt-4" href="/Login" onClick={handleClose} >Login</NavLink>

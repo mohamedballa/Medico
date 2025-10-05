@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Verified;
 use App\Models\User;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-
+use Illuminate\Support\Facades\Auth;
 
 //  Routes FronEnd
 
@@ -48,7 +48,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard', function () {
     return inertia('Dashboard');
-})->middleware(['auth','verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 
         // Reset Password
@@ -65,9 +65,12 @@ Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']
 
 
 // Notice page - user sees this after signup
-Route::get('/email/verify', function () {
-    return Inertia::render('Auth/VerifyNotice');        // Inertia page (create below)
-})->middleware('auth')->name('verification.notice');
+Route::get('/email/verify', function (Request $request) {
+    $email = $request->query('email');
+    return Inertia::render('Auth/VerifyNotice' , [
+        'email' => $request->query('email'),
+    ]);       
+})->name('verification.notice');
 
 // Signed verification link (from email)
 Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
@@ -87,9 +90,10 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) 
 
     $user->markEmailAsVerified();
     event(new Verified($user));
+    Auth::logout();
 
     return redirect()->route('login')->with('status', 'Email verified successfully! You can now login.');
-})->middleware('signed')->name('verification.verify');
+});
 
 // Resend verification email without login
 Route::post('/email/verification-notification', function (Request $request) {
