@@ -93,7 +93,7 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) 
     Auth::logout();
 
     return redirect()->route('login')->with('status', 'Email verified successfully! You can now login.');
-});
+})->name('verification.verify');
 
 // Resend verification email without login
 Route::post('/email/verification-notification', function (Request $request) {
