@@ -10,6 +10,9 @@ use Illuminate\Auth\Events\Verified;
 use App\Models\User;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\ChapterController;
+use App\Http\Controllers\Admin\ModuleController;
 
 //  Routes FronEnd
 
@@ -25,7 +28,7 @@ Route::get('/Syllabus', function () {
 
 
 
-// Route::inertia('/Syllabus','Syllabus');
+// Route for Pages
 Route::inertia('/About','About');
 Route::inertia('/Syllabus2','Syllabus2');
 Route::inertia('/Login','Login');
@@ -113,3 +116,32 @@ Route::post('/email/verification-notification', function (Request $request) {
 
     return back()->with('status', 'Verification link sent to your email!');
 })->name('verification.resend');
+
+
+/**
+ * Admin Routes
+ */
+
+// Public Routes
+Route::prefix('admin')
+    ->middleware(['auth', 'admin'])
+    ->group(function () {
+
+        // Admin Dashboard
+        Route::get('/', function () {
+            return Inertia::render('Admin/Dashboard');
+        })->name('admin.dashboard');
+
+        // Resource Routes
+        Route::resource('subjects', SubjectController::class)->except(['show']);
+        Route::resource('chapters', ChapterController::class)->except(['show']);
+        Route::resource('modules', ModuleController::class)->except(['show']);
+    });
+
+
+
+
+
+
+
+
