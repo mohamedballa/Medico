@@ -12,6 +12,11 @@ export default defineConfig({
         react(),
         svgr(),
     ],
+    resolve: {
+        alias: {
+            '@': '/resources/js',  
+        },
+    },
     server: {
         hmr: {
             host: 'medicosolomed.com',
