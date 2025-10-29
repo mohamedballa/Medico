@@ -7,7 +7,8 @@ export default function Index({ subjects }) {
     return (
         <AppLayout>
             <Head title="Subjects" />
-
+            <div className=" bg-primary min-h-screen pb-5">
+            <div className=" bg-primary h-[200px]"></div>
             {/* Page Header */}
             <header className="bg-white shadow">
                 <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -85,6 +86,7 @@ export default function Index({ subjects }) {
                         </table>
                     </div>
                 </div>
+            </div>
             </div>
         </AppLayout>
     );

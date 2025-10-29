@@ -133,9 +133,38 @@ Route::prefix('admin')
         })->name('admin.dashboard');
 
         // Resource Routes
-        Route::resource('subjects', SubjectController::class)->except(['show']);
-        Route::resource('chapters', ChapterController::class)->except(['show']);
-        Route::resource('modules', ModuleController::class)->except(['show']);
+        Route::resource('subjects', SubjectController::class)
+        ->except(['show'])
+        ->names([
+            'index' => 'admin.subjects.index',
+            'create' => 'admin.subjects.create',
+            'store' => 'admin.subjects.store',
+            'edit' => 'admin.subjects.edit',
+            'update' => 'admin.subjects.update',
+            'destroy' => 'admin.subjects.destroy',
+        ]);
+
+        Route::resource('chapters', ChapterController::class)
+        ->except(['show'])
+        ->names([
+            'index' => 'admin.chapters.index',
+            'create' => 'admin.chapters.create',
+            'store' => 'admin.chapters.store',
+            'edit' => 'admin.chapters.edit',
+            'update' => 'admin.chapters.update',
+            'destroy' => 'admin.chapters.destroy',
+        ]);
+
+        Route::resource('modules', ModuleController::class)
+        ->except(['show'])
+        ->names([
+            'index' => 'admin.modules.index',
+            'create' => 'admin.modules.create',
+            'store' => 'admin.modules.store',
+            'edit' => 'admin.modules.edit',
+            'update' => 'admin.modules.update',
+            'destroy' => 'admin.modules.destroy', 
+        ]);
     });
 
 
