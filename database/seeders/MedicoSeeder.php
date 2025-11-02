@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Subject;
+use App\Models\Topic;
 use App\Models\Chapter;
 use App\Models\Module;
 use App\Models\Folio;
@@ -27,12 +28,12 @@ class MedicoSeeder extends Seeder
     public function run(): void
     {
 
-        $testUser = User::create([
-            'name' => 'Test Admin',
-            'email' => 'admin@example.com',
-            'password' => 'password', 
-           
-            ]);
+        // $testUser = User::create([
+        //     'name' => 'Test Admin',
+        //     'email' => 'admin@example.com',
+        //     'password' => 'password', 
+        //     'is_admin' => True,
+        //     ]);
 
        // Subjects (3)
        $subject1 = Subject::create([
@@ -51,34 +52,76 @@ class MedicoSeeder extends Seeder
         'order' => 3,
     ]);
 
+
+    // 3. Topics (2 per subject)
+    $topic1_1 = Topic::create([
+        'subject_id' => $subject1->id,
+        'name' => 'Musculoskeletal',
+        'description' => 'Bones and muscles',
+        'order' => 1,
+    ]);
+    $topic1_2 = Topic::create([
+        'subject_id' => $subject1->id,
+        'name' => 'Nervous System',
+        'description' => 'Brain and nerves',
+        'order' => 2,
+    ]);
+
+    $topic2_1 = Topic::create([
+        'subject_id' => $subject2->id,
+        'name' => 'Cardiovascular',
+        'description' => 'Heart and blood vessels',
+        'order' => 1,
+    ]);
+    $topic2_2 = Topic::create([
+        'subject_id' => $subject2->id,
+        'name' => 'Respiratory',
+        'description' => 'Lungs and breathing',
+        'order' => 2,
+    ]);
+
+    $topic3_1 = Topic::create([
+        'subject_id' => $subject3->id,
+        'name' => 'Enzymology',
+        'description' => 'Enzyme structure and function',
+        'order' => 1,
+    ]);
+    $topic3_2 = Topic::create([
+        'subject_id' => $subject3->id,
+        'name' => 'Metabolic Pathways',
+        'description' => 'Energy and biosynthesis',
+        'order' => 2,
+    ]);
+
+
     // Chapters (2 per subject)
     $chapter1_1 = Chapter::create([
-        'subject_id' => $subject1->id,
+        'topic_id' => $topic1_1->id,
         'name' => 'Skeletal System',
         'order' => 1,
     ]);
     $chapter1_2 = Chapter::create([
-        'subject_id' => $subject1->id,
+        'topic_id' => $topic1_1->id,
         'name' => 'Muscular System',
         'order' => 2,
     ]);
     $chapter2_1 = Chapter::create([
-        'subject_id' => $subject2->id,
+        'topic_id' => $topic2_1->id,
         'name' => 'Circulatory System',
         'order' => 1,
     ]);
     $chapter2_2 = Chapter::create([
-        'subject_id' => $subject2->id,
+        'topic_id' => $topic2_1->id,
         'name' => 'Respiratory System',
         'order' => 2,
     ]);
     $chapter3_1 = Chapter::create([
-        'subject_id' => $subject3->id,
+        'topic_id' => $topic3_1->id,
         'name' => 'Enzymes',
         'order' => 1,
     ]);
     $chapter3_2 = Chapter::create([
-        'subject_id' => $subject3->id,
+        'topic_id' => $topic3_1->id,
         'name' => 'Metabolism',
         'order' => 2,
     ]);

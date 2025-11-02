@@ -12,4 +12,8 @@ class Subject extends Model
     {
         return $this->hasMany(Chapter::class)->orderBy('order');
     }
+    public function topics()
+    {
+        return $this->hasMany(Topic::class)->orderBy('order');
+    }
 }

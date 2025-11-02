@@ -46,6 +46,23 @@ export default function Dashboard() {
                             </div>
                         </Link>
 
+                        {/* Topics Card */}
+                        <Link href={route('admin.topics.index')} className="group bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+                            <div className="flex items-center ">
+                                <div className="flex-shrink-0">
+                                <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                </div>
+                                <div className="ml-4">
+                                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-indigo-600">
+                                        Topics
+                                    </h3>
+                                    <p className="mt-1 text-sm text-gray-600">Manage topics</p>
+                                </div>
+                                
+                            </div>
+                        </Link>
                         {/* Chapters Card */}
                         <Link
                             href={route('admin.chapters.index')}
@@ -87,15 +104,19 @@ export default function Dashboard() {
                     {/* Stats Row (Optional - Add later) */}
                     <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
                         <div className="bg-white p-6 rounded-lg shadow">
-                            <h3 className="text-sm font-medium text-gray-500">Total Subjects</h3>
+                            <h3 className="text-lg font-medium text-gray-500">Total Subjects</h3>
                             <p className="text-2xl font-semibold text-gray-900">3</p>
                         </div>
                         <div className="bg-white p-6 rounded-lg shadow">
-                            <h3 className="text-sm font-medium text-gray-500">Total Chapters</h3>
+                            <h3 className="text-lg font-medium text-gray-500">Total Topics</h3>
+                            <p className="text-2xl font-semibold text-gray-900">3</p>
+                        </div>
+                        <div className="bg-white p-6 rounded-lg shadow">
+                            <h3 className="text-lg font-medium text-gray-500">Total Chapters</h3>
                             <p className="text-2xl font-semibold text-gray-900">6</p>
                         </div>
                         <div className="bg-white p-6 rounded-lg shadow">
-                            <h3 className="text-sm font-medium text-gray-500">Total Modules</h3>
+                            <h3 className="text-lg font-medium text-gray-500">Total Modules</h3>
                             <p className="text-2xl font-semibold text-gray-900">18</p>
                         </div>
                     </div>

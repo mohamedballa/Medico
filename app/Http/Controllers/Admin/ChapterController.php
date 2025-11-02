@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chapter;
-use App\Models\Subject;
+use App\Models\Topic;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
@@ -12,65 +12,52 @@ class ChapterController extends Controller
 {
     public function index()
     {
-        $chapters = Chapter::with('subject')->orderBy('order')->get();
-        return Inertia::render('Admin/Chapters/Index', [
-            'chapters' => $chapters
-        ]);
+        $chapters = Chapter::with('topic.subject')->orderBy('order')->get();
+        return Inertia::render('Admin/Chapters/Index', ['chapters' => $chapters]);
     }
 
     public function create()
     {
-        $subjects = Subject::orderBy('order')->get();
-        return Inertia::render('Admin/Chapters/Create', [
-            'subjects' => $subjects
-        ]);
+        $topics = Topic::with('subject')->orderBy('order')->get();
+        return Inertia::render('Admin/Chapters/Create', ['topics' => $topics]);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'subject_id' => 'required|exists:subjects,id',
+        $validated = $request->validate([
+            'topic_id' => 'required|exists:topics,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'order' => 'required|integer'
+            'order' => 'required|integer',
         ]);
 
-        Chapter::create($request->all());
-
-        return redirect()->route('admin.chapters.index')
-            ->with('success', 'Chapter created successfully.');
+        Chapter::create($validated);
+        return redirect()->route('admin.chapters.index')->with('success', 'Chapter created.');
     }
 
     public function edit(Chapter $chapter)
     {
-        $chapter->load('subject');
-        $subjects = Subject::orderBy('order')->get();
-
-        return Inertia::render('Admin/Chapters/Edit', [
-            'chapter' => $chapter,
-            'subjects' => $subjects
-        ]);
+        $chapter->load('topic.subject');
+        $topics = Topic::with('subject')->orderBy('order')->get();
+        return Inertia::render('Admin/Chapters/Edit', ['chapter' => $chapter, 'topics' => $topics]);
     }
 
     public function update(Request $request, Chapter $chapter)
     {
-        $request->validate([
-            'subject_id' => 'required|exists:subjects,id',
+        $validated = $request->validate([
+            'topic_id' => 'required|exists:topics,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'order' => 'required|integer'
+            'order' => 'required|integer',
         ]);
 
-        $chapter->update($request->all());
-
-        return redirect()->route('admin.chapters.index')
-            ->with('success', 'Chapter updated successfully.');
+        $chapter->update($validated);
+        return redirect()->route('admin.chapters.index')->with('success', 'Chapter updated.');
     }
 
     public function destroy(Chapter $chapter)
     {
         $chapter->delete();
-        return redirect()->route('admin.chapters.index')
-            ->with('success', 'Chapter deleted.');
+        return redirect()->route('admin.chapters.index')->with('success', 'Chapter deleted.');
     }
 }

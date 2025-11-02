@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\ChapterController;
 use App\Http\Controllers\Admin\ModuleController;
+use App\Http\Controllers\Admin\TopicController;
 
 //  Routes FronEnd
 
@@ -117,7 +118,7 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('status', 'Verification link sent to your email!');
 })->name('verification.resend');
 
-
+Route::get('/test', fn() => 'Laravel is working!');
 /**
  * Admin Routes
  */
@@ -143,7 +144,16 @@ Route::prefix('admin')
             'update' => 'admin.subjects.update',
             'destroy' => 'admin.subjects.destroy',
         ]);
-
+        Route::resource('topics', TopicController::class)
+            ->except(['show'])
+            ->names([
+                'index' => 'admin.topics.index',
+                'create' => 'admin.topics.create',
+                'store' => 'admin.topics.store',
+                'edit' => 'admin.topics.edit',
+                'update' => 'admin.topics.update',
+                'destroy' => 'admin.topics.destroy',
+            ]);
         Route::resource('chapters', ChapterController::class)
         ->except(['show'])
         ->names([
