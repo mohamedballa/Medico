@@ -1,26 +1,26 @@
 import AppLayout from '@/Layouts/AppLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 
-export default function Create({ topics }) {
-    const { data, setData, post, processing, errors } = useForm({
-        topic_id: '',
-        name: '',
-        description: '',
-        order: 1,
+export default function Edit({ chapter, topics }) {
+    const { data, setData, put, processing, errors } = useForm({
+        topic_id: chapter.topic_id,
+        name: chapter.name,
+        description: chapter.description ?? '',
+        order: chapter.order,
     });
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('admin.chapters.store'));
+        put(route('admin.chapters.update', chapter.id));
     };
 
     return (
         <AppLayout>
-            <Head title="Create Chapter" />
+            <Head title="Edit Chapter" />
 
             <header className="bg-white shadow-sm border-b">
                 <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <h1 className="text-3xl font-bold text-gray-900">Create Chapter</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">Edit Chapter</h1>
                 </div>
             </header>
 
@@ -81,7 +81,7 @@ export default function Create({ topics }) {
                                 disabled={processing}
                                 className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:opacity-50"
                             >
-                                {processing ? 'Saving…' : 'Create Chapter'}
+                                {processing ? 'Updating…' : 'Update Chapter'}
                             </button>
                             <Link href={route('admin.chapters.index')} className="px-4 py-2 bg-gray-300 rounded">
                                 Cancel

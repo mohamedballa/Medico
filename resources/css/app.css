@@ -7,3 +7,13 @@
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+
+
+/* resources/css/app.css (add this) */
+.table-fixed {
+    table-layout: fixed;
+    width: 100%;
+}
+.col-name { width: 60%; }
+.col-order { width: 20%; }
+.col-actions { width: 20%; }

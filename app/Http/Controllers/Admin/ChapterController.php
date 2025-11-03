@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chapter;
+use App\Models\Subject;
 use App\Models\Topic;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -12,8 +13,16 @@ class ChapterController extends Controller
 {
     public function index()
     {
-        $chapters = Chapter::with('topic.subject')->orderBy('order')->get();
-        return Inertia::render('Admin/Chapters/Index', ['chapters' => $chapters]);
+        $subjects = Subject::with([
+            'topics' => fn($q) => $q->orderBy('order'),
+            'topics.chapters' => fn($q) => $q->orderBy('order')
+        ])
+        ->orderBy('order')
+        ->get();
+
+    return Inertia::render('Admin/Chapters/Index', [
+        'subjects' => $subjects,  
+    ]);
     }
 
     public function create()
