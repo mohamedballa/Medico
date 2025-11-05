@@ -14,6 +14,9 @@ use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\ChapterController;
 use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\Admin\TopicController;
+use App\Http\Controllers\Admin\FolioController;
+use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\FlashCardController;
 
 //  Routes FronEnd
 
@@ -118,7 +121,6 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('status', 'Verification link sent to your email!');
 })->name('verification.resend');
 
-Route::get('/test', fn() => 'Laravel is working!');
 /**
  * Admin Routes
  */
@@ -174,6 +176,38 @@ Route::prefix('admin')
             'edit' => 'admin.modules.edit',
             'update' => 'admin.modules.update',
             'destroy' => 'admin.modules.destroy', 
+        ]);
+        Route::resource('folios', FolioController::class)
+        ->except(['show'])
+        ->names([
+            'index'   => 'admin.folios.index',
+            'create'  => 'admin.folios.create',
+            'store'   => 'admin.folios.store',
+            'edit'    => 'admin.folios.edit',
+            'update'  => 'admin.folios.update',
+            'destroy' => 'admin.folios.destroy',
+        ]);
+
+    Route::resource('questions', QuestionController::class)
+        ->except(['show'])
+        ->names([
+            'index'   => 'admin.questions.index',
+            'create'  => 'admin.questions.create',
+            'store'   => 'admin.questions.store',
+            'edit'    => 'admin.questions.edit',
+            'update'  => 'admin.questions.update',
+            'destroy' => 'admin.questions.destroy',
+        ]);
+
+    Route::resource('flashcards', FlashcardController::class)
+        ->except(['show'])
+        ->names([
+            'index'   => 'admin.flashcards.index',
+            'create'  => 'admin.flashcards.create',
+            'store'   => 'admin.flashcards.store',
+            'edit'    => 'admin.flashcards.edit',
+            'update'  => 'admin.flashcards.update',
+            'destroy' => 'admin.flashcards.destroy',
         ]);
     });
 

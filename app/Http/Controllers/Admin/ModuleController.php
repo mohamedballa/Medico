@@ -12,18 +12,39 @@ class ModuleController extends Controller
 {
     public function index()
     {
-        $modules = Module::with('chapter.subject')->orderBy('order')->get();
-        return Inertia::render('Admin/Modules/Index', [
-            'modules' => $modules
-        ]);
+            $subjects = \App\Models\Subject::with([
+                'topics' => function ($q) {
+                    return $q->orderBy('order');
+                },
+                'topics.chapters' => function ($q) {
+                    return $q->orderBy('order');
+                },
+                'topics.chapters.modules' => function ($q) {
+                    return $q->orderBy('order')
+                        ->withCount(['folios', 'questions', 'flashcards'])
+                        ->with(['folios' => function ($q) {
+                            return $q->select('id', 'module_id', 'title');
+                        }]);
+                }
+            ])
+                ->orderBy('order')
+                ->get();
+        
+
+            return Inertia::render('Admin/Modules/Index', [
+                'subjects' => $subjects
+    ]);
     }
 
     public function create()
     {
-        $chapters = Chapter::with('subject')->orderBy('order')->get();
+        $chapters = Chapter::with(['topic.subject'])
+        ->orderBy('order')
+        ->get();
+
         return Inertia::render('Admin/Modules/Create', [
             'chapters' => $chapters
-        ]);
+    ]);
     }
 
     public function store(Request $request)
@@ -43,13 +64,13 @@ class ModuleController extends Controller
 
     public function edit(Module $module)
     {
-        $module->load('chapter.subject');
-        $chapters = Chapter::with('subject')->orderBy('order')->get();
+        $module->load('chapter.topic.subject');
+        $chapters = Chapter::with(['topic.subject'])->orderBy('order')->get();
 
         return Inertia::render('Admin/Modules/Edit', [
-            'module' => $module,
+            'module'   => $module,
             'chapters' => $chapters
-        ]);
+    ]);
     }
 
     public function update(Request $request, Module $module)
