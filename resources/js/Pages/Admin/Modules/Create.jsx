@@ -18,7 +18,8 @@ export default function Create({ chapters }) {
     return (
         <AppLayout>
             <Head title="Create Module" />
-
+            <div className=" bg-primary min-h-screen pb-5">
+            <div className=" bg-primary h-[200px]"></div>
             <div className="py-12">
                 <div className="max-w-3xl mx-auto">
                     <form onSubmit={submit} className="bg-white p-6 rounded-lg shadow space-y-6">
@@ -84,6 +85,7 @@ export default function Create({ chapters }) {
                         </div>
                     </form>
                 </div>
+            </div>
             </div>
         </AppLayout>
     );

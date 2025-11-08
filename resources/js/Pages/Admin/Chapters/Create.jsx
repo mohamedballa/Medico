@@ -17,7 +17,8 @@ export default function Create({ topics }) {
     return (
         <AppLayout>
             <Head title="Create Chapter" />
-
+            <div className=" bg-primary min-h-screen pb-5">
+            <div className=" bg-primary h-[200px]"></div>
             <header className="bg-white shadow-sm border-b">
                 <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <h1 className="text-3xl font-bold text-gray-900">Create Chapter</h1>
@@ -89,6 +90,7 @@ export default function Create({ topics }) {
                         </div>
                     </form>
                 </div>
+            </div>
             </div>
         </AppLayout>
     );

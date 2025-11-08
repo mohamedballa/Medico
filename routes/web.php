@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\TopicController;
 use App\Http\Controllers\Admin\FolioController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\FlashCardController;
+use App\Http\Controllers\Admin\FolioSlideController;
 
 //  Routes FronEnd
 
@@ -209,9 +210,16 @@ Route::prefix('admin')
             'update'  => 'admin.flashcards.update',
             'destroy' => 'admin.flashcards.destroy',
         ]);
+        Route::resource('folio-slides', FolioSlideController::class)
+        ->except(['index', 'show'])
+        ->names('admin.folio-slides');
     });
 
-
+// routes/web.php
+Route::post('/admin/upload-image', function (Request $request) {
+    $path = $request->file('image')->store('editor', 'public');
+    return response()->json(['url' => asset('storage/' . $path)]);
+})->middleware(['auth', 'admin']);
 
 
 

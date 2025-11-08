@@ -8,7 +8,8 @@ export default function Index({ subjects }) {
     return (
         <AppLayout>
             <Head title="Modules" />
-
+            <div className=" bg-primary min-h-screen pb-5">
+            <div className=" bg-primary h-[200px]"></div>
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     {flash?.success && (
@@ -98,6 +99,7 @@ export default function Index({ subjects }) {
                         ))}
                     </div>
                 </div>
+            </div>
             </div>
         </AppLayout>
     );

@@ -7,7 +7,8 @@ export default function Index({ subjects }) {
     return (
         <AppLayout>
             <Head title="Chapters" />
-
+            <div className=" bg-primary min-h-screen pb-5">
+            <div className=" bg-primary h-[200px]"></div>
             <header className="bg-white shadow-sm border-b">
                 <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <h1 className="text-3xl font-bold text-gray-900">Chapters</h1>
@@ -76,6 +77,7 @@ export default function Index({ subjects }) {
                         ))}
                     </div>
                 </div>
+            </div>
             </div>
         </AppLayout>
     );
