@@ -34,7 +34,8 @@ class QuestionController extends Controller
     {
         $validated = $request->validate([
             'module_id'      => 'required|exists:modules,id',
-            'question_text'  => 'required|string',
+            'question_text' => 'required|array',
+            'question_text.blocks' => 'required|array',
             'type'           => 'required|in:mcq,true_false',
             'correct_answer' => 'required|string',
             'explanation'    => 'nullable|string',

@@ -21,6 +21,7 @@
         "@editorjs/header": "^2.8.8",
         "@editorjs/image": "^2.10.3",
         "@editorjs/list": "^2.0.8",
+        "@editorjs/paragraph": "^2.11.7",
         "@editorjs/table": "^2.4.5",
         "@inertiajs/react": "^2.1.6",
         "@svgr/rollup": "^8.1.0",

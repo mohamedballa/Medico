@@ -37,7 +37,8 @@ export default function Edit({ slide }) {
     return (
         <AppLayout>
             <Head title="Edit Slide" />
-
+            <div className=" bg-primary min-h-screen pb-5">
+            <div className=" bg-primary h-[200px]"></div>
             <div className="py-12">
                 <div className="max-w-4xl mx-auto">
                     <div className="bg-white p-6 rounded-lg shadow">
@@ -74,6 +75,7 @@ export default function Edit({ slide }) {
                         </form>
                     </div>
                 </div>
+            </div>
             </div>
         </AppLayout>
     );
