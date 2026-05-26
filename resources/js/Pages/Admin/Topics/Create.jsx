@@ -1,12 +1,12 @@
 import AppLayout from '@/Layouts/AppLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
+import FormField from '@/components/FormField';
 
 export default function Create({ subjects }) {
     const { data, setData, post, processing, errors } = useForm({
         subject_id: '',
         name: '',
         description: '',
-        order: 1,
     });
 
     const submit = (e) => {
@@ -28,21 +28,20 @@ export default function Create({ subjects }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <form onSubmit={submit} className="bg-white p-6 rounded-lg shadow">
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Subject</label>
-                            <select
+                        
+                        <FormField
+                                label="Subject"
+                                name="subject_id"
+                                type="select"
                                 value={data.subject_id}
                                 onChange={e => setData('subject_id', e.target.value)}
-                                className="mt-1 block w-full border rounded-md p-2"
+                                error={errors.subject_id}
                             >
                                 <option value="">Select Subject</option>
                                 {subjects.map(s => (
                                     <option key={s.id} value={s.id}>{s.name}</option>
                                 ))}
-                            </select>
-                            {errors.subject_id && <p className="text-red-600 text-sm">{errors.subject_id}</p>}
-                        </div>
-
+                            </FormField>
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700">Name</label>
                             <input

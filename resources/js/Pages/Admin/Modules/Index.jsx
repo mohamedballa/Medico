@@ -76,7 +76,7 @@ export default function Index({ subjects }) {
                                                                 </div>
 
                                                                 {/* Quick Links */}
-                                                                <div className="flex gap-3 mt-3 text-xs">
+                                                                <div className="flex justify-between gap-9 px-20 mt-3 text-xs">
                                                                     <Link href={route('admin.folios.index', { module: module.id })} className="text-blue-600 hover:underline">
                                                                         Manage Folios
                                                                     </Link>
