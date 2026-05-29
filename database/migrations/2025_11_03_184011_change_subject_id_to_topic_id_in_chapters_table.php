@@ -10,14 +10,16 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up()
-    {
-        Schema::table('chapters', function (Blueprint $table) {
-            $table->dropForeign(['subject_id']);
-            $table->dropColumn('subject_id');
-
-            $table->foreignId('topic_id')->after('id')->constrained();
-        });
-    }
+	{
+   	 Schema::table('chapters', function (Blueprint $table) {
+        if (Schema::hasColumn('chapters', 'subject_id')) {
+       		     $table->dropColumn('subject_id');
+       		 }
+        if (!Schema::hasColumn('chapters', 'topic_id')) {
+    	       	     $table->foreignId('topic_id')->after('id')->constrained();
+        	}
+	    });
+	}
 
     public function down()
     {
