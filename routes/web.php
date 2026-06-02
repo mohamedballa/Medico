@@ -16,7 +16,7 @@ use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\Admin\TopicController;
 use App\Http\Controllers\Admin\FolioController;
 use App\Http\Controllers\Admin\QuestionController;
-use App\Http\Controllers\Admin\FlashCardController;
+use App\Http\Controllers\Admin\FlashcardController;
 use App\Http\Controllers\Admin\FolioSlideController;
 
 //  Routes FronEnd
