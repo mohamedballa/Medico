@@ -7,6 +7,7 @@
         "dev": "vite"
     },
     "devDependencies": {
+        "@svgr/rollup": "^8.1.0",
         "autoprefixer": "^10.4.21",
         "axios": "^1.11.0",
         "concurrently": "^9.0.1",
@@ -24,7 +25,6 @@
         "@editorjs/paragraph": "^2.11.7",
         "@editorjs/table": "^2.4.5",
         "@inertiajs/react": "^2.1.6",
-        "@svgr/rollup": "^8.1.0",
         "@vitejs/plugin-react": "^5.0.3",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",

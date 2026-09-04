@@ -55,6 +55,15 @@ services:
             - sail
         depends_on:
             - laravel.test
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - '8081:8080'
+        networks:
+            - sail
+        depends_on:
+            - pgsql
 networks:
     sail:
         driver: bridge
