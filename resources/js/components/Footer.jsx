@@ -26,9 +26,9 @@ export default function Footer(){
             </div>
             <div className="flex gap-10">
                 <Link><img src={X} className="w-6" /> </Link>
-                <Link> <img src={faceBook} className="w-6"  /> </Link>
+               {/* <Link> <img src={faceBook} className="w-6"  /> </Link>*/}
                 <Link> <img src={instagram} className="w-6"  /> </Link>
-                <Link> <img src={tiktok} className="w-6"  /> </Link>
+               {/* <Link> <img src={tiktok} className="w-6"  /> </Link>*/}
             </div>
             <div className=" flex justify-center items-center "> 
                 <img  src={copy_right} className="" /> 
@@ -51,9 +51,9 @@ export default function Footer(){
            </div>
            <div className="flex gap-40">
                <Link><img src={X} className="w-10" /> </Link>
-               <Link> <img src={faceBook} className="w-10"  /> </Link>
-               <Link> <img src={instagram} className="w-10"  /> </Link>
-               <Link> <img src={tiktok} className="w-10"  /> </Link>
+               {/* <Link> <img src={faceBook} className="w-6"  /> </Link>*/}
+                <Link> <img src={instagram} className="w-9"  /> </Link>
+               {/* <Link> <img src={tiktok} className="w-6"  /> </Link>*/}
            </div>
            <div className=" flex justify-center items-center "> 
                <img  src={copy_right} className="w-60" /> 
@@ -74,9 +74,9 @@ export default function Footer(){
            </div>
            <div className="flex gap-32">
                <Link><img src={X} className="w-10" /> </Link>
-               <Link> <img src={faceBook} className="w-10"  /> </Link>
-               <Link> <img src={instagram} className="w-10"  /> </Link>
-               <Link> <img src={tiktok} className="w-10"  /> </Link>
+               {/* <Link> <img src={faceBook} className="w-6"  /> </Link>*/}
+                <Link> <img src={instagram} className="w-9"  /> </Link>
+               {/* <Link> <img src={tiktok} className="w-6"  /> </Link>*/}
            </div>
            <div className=" flex justify-center items-center "> 
                <img  src={copy_right} className="w-48" /> 
