@@ -24,13 +24,13 @@ class SubjectController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'order' => 'required|integer'
         ]);
 
-        Subject::create($request->all());
+        Subject::create($validated);
 
         return redirect()->route('admin.subjects.index')
             ->with('success', 'Subject created.');
@@ -45,13 +45,13 @@ class SubjectController extends Controller
 
     public function update(Request $request, Subject $subject)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'order' => 'required|integer'
         ]);
 
-        $subject->update($request->all());
+        $subject->update($validated);
 
         return redirect()->route('admin.subjects.index')
             ->with('success', 'Subject updated.');
