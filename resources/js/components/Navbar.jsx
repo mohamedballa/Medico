@@ -15,8 +15,8 @@ export default function Navbar() {
   ];
 
   const authLinks = [
-    { href: "/Signup", label: "Signup" },
-    { href: "/Login", label: "Login" },
+    { href: "/signup", label: "Signup" },
+    { href: "/login", label: "Login" },
   ];
 
   return (

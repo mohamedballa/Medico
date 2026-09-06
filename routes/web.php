@@ -1,228 +1,91 @@
 <?php
 
-
+use App\Http\Controllers\Admin\ChapterController;
+use App\Http\Controllers\Admin\FlashcardController;
+use App\Http\Controllers\Admin\FolioController;
+use App\Http\Controllers\Admin\FolioSlideController;
+use App\Http\Controllers\Admin\ImageUploadController;
+use App\Http\Controllers\Admin\ModuleController;
+use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\TopicController;
+use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Auth\PasswordResetController;
-use Illuminate\Http\Request;
-use Illuminate\Auth\Events\Verified;
-use App\Models\User;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Admin\SubjectController;
-use App\Http\Controllers\Admin\ChapterController;
-use App\Http\Controllers\Admin\ModuleController;
-use App\Http\Controllers\Admin\TopicController;
-use App\Http\Controllers\Admin\FolioController;
-use App\Http\Controllers\Admin\QuestionController;
-use App\Http\Controllers\Admin\FlashcardController;
-use App\Http\Controllers\Admin\FolioSlideController;
 
-//  Routes FronEnd
+/*
+|--------------------------------------------------------------------------
+| Public pages
+|--------------------------------------------------------------------------
+*/
 
-Route::get('/', function () {
-    return Inertia::render("Home");
-});
-Route::get('/Home', function () {
-    return Inertia::render("Home");
-});
-Route::get('/Syllabus', function () {
-    return Inertia::render("Syllabus");
-});
+Route::inertia('/', 'Home')->name('home');
+Route::inertia('/Home', 'Home');
+Route::inertia('/Syllabus', 'Syllabus')->name('syllabus');
+Route::inertia('/About', 'About')->name('about');
+Route::inertia('/Terms', 'Terms&Conditions')->name('terms');
 
-
-
-// Route for Pages
-Route::inertia('/About','About');
-Route::inertia('/Syllabus2','Syllabus2');
-Route::inertia('/Login','Login');
-Route::inertia('/Signup','Signup');
-Route::inertia('/Admin','Admin');
-Route::inertia('/Dashboard','Dashboard');
-Route::inertia('/Terms','Terms&Conditions');
-
-
-
-//  Auth Controller
+/*
+|--------------------------------------------------------------------------
+| Authentication
+|--------------------------------------------------------------------------
+| Credential-accepting endpoints are rate limited (6 attempts / minute / IP)
+| to blunt brute-force and enumeration attempts.
+*/
 
 Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
-Route::post('/signup', [AuthController::class, 'signup']);
+Route::post('/signup', [AuthController::class, 'signup'])->middleware('throttle:6,1');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,1');
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
-Route::get('/dashboard', function () {
-    return inertia('Dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', fn () => Inertia::render('Dashboard'))
+    ->middleware('auth')
+    ->name('dashboard');
 
-
-        // Reset Password
+// Password reset
 Route::get('/forgot-password', [PasswordResetController::class, 'requestForm'])->name('password.request');
-Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])->name('password.email');
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])
+    ->middleware('throttle:6,1')
+    ->name('password.email');
 Route::get('/reset-password/{token}', [PasswordResetController::class, 'resetForm'])->name('password.reset');
-Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])->name('password.update');
-        
- 
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])
+    ->middleware('throttle:6,1')
+    ->name('password.update');
 
+// Email verification (links are temporary signed URLs, see VerifyEmailNotification)
+Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.verify');
+Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])
+    ->middleware('throttle:6,1')
+    ->name('verification.resend');
 
+/*
+|--------------------------------------------------------------------------
+| Admin
+|--------------------------------------------------------------------------
+*/
 
-
-
-
-// Notice page - user sees this after signup
-Route::get('/email/verify', function (Request $request) {
-    $email = $request->query('email');
-    return Inertia::render('Auth/VerifyNotice' , [
-        'email' => $request->query('email'),
-    ]);       
-})->name('verification.notice');
-
-// Signed verification link (from email)
-Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
-    $user = User::find($id);
-
-    if (!$user) {
-        abort(404);
-    }
-
-    if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
-        abort(403, 'Invalid verification link.');
-    }
-
-    if ($user->hasVerifiedEmail()) {
-        return redirect()->route('login')->with('status', 'Email already verified. Please login.');
-    }
-
-    $user->markEmailAsVerified();
-    event(new Verified($user));
-    Auth::logout();
-
-    return redirect()->route('login')->with('status', 'Email verified successfully! You can now login.');
-})->name('verification.verify');
-
-// Resend verification email without login
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->validate(['email' => 'required|email']);
-
-    $user = User::where('email', $request->email)->first();
-
-    if (!$user) {
-        return back()->with('status', 'No account found with that email address.');
-    }
-
-    if ($user->hasVerifiedEmail()) {
-        return back()->with('status', 'Your email is already verified.');
-    }
-
-    $user->sendEmailVerificationNotification();
-
-    return back()->with('status', 'Verification link sent to your email!');
-})->name('verification.resend');
-
-/**
- * Admin Routes
- */
-
-// Public Routes
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
+    ->name('admin.')
     ->group(function () {
+        Route::get('/', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard');
 
-        // Admin Dashboard
-        Route::get('/', function () {
-            return Inertia::render('Admin/Dashboard');
-        })->name('admin.dashboard');
+        Route::resource('subjects', SubjectController::class)->except('show');
+        Route::resource('topics', TopicController::class)->except('show');
+        Route::resource('chapters', ChapterController::class)->except('show');
+        Route::resource('modules', ModuleController::class)->except('show');
+        Route::resource('folios', FolioController::class)->except('show');
+        Route::resource('questions', QuestionController::class)->except('show');
+        Route::resource('flashcards', FlashcardController::class)->except('show');
+        Route::resource('folio-slides', FolioSlideController::class)->except(['index', 'show']);
 
-        // Resource Routes
-        Route::resource('subjects', SubjectController::class)
-        ->except(['show'])
-        ->names([
-            'index' => 'admin.subjects.index',
-            'create' => 'admin.subjects.create',
-            'store' => 'admin.subjects.store',
-            'edit' => 'admin.subjects.edit',
-            'update' => 'admin.subjects.update',
-            'destroy' => 'admin.subjects.destroy',
-        ]);
-        Route::resource('topics', TopicController::class)
-            ->except(['show'])
-            ->names([
-                'index' => 'admin.topics.index',
-                'create' => 'admin.topics.create',
-                'store' => 'admin.topics.store',
-                'edit' => 'admin.topics.edit',
-                'update' => 'admin.topics.update',
-                'destroy' => 'admin.topics.destroy',
-            ]);
-        Route::resource('chapters', ChapterController::class)
-        ->except(['show'])
-        ->names([
-            'index' => 'admin.chapters.index',
-            'create' => 'admin.chapters.create',
-            'store' => 'admin.chapters.store',
-            'edit' => 'admin.chapters.edit',
-            'update' => 'admin.chapters.update',
-            'destroy' => 'admin.chapters.destroy',
-        ]);
-
-        Route::resource('modules', ModuleController::class)
-        ->except(['show'])
-        ->names([
-            'index' => 'admin.modules.index',
-            'create' => 'admin.modules.create',
-            'store' => 'admin.modules.store',
-            'edit' => 'admin.modules.edit',
-            'update' => 'admin.modules.update',
-            'destroy' => 'admin.modules.destroy', 
-        ]);
-        Route::resource('folios', FolioController::class)
-        ->except(['show'])
-        ->names([
-            'index'   => 'admin.folios.index',
-            'create'  => 'admin.folios.create',
-            'store'   => 'admin.folios.store',
-            'edit'    => 'admin.folios.edit',
-            'update'  => 'admin.folios.update',
-            'destroy' => 'admin.folios.destroy',
-        ]);
-
-    Route::resource('questions', QuestionController::class)
-        ->except(['show'])
-        ->names([
-            'index'   => 'admin.questions.index',
-            'create'  => 'admin.questions.create',
-            'store'   => 'admin.questions.store',
-            'edit'    => 'admin.questions.edit',
-            'update'  => 'admin.questions.update',
-            'destroy' => 'admin.questions.destroy',
-        ]);
-
-    Route::resource('flashcards', FlashcardController::class)
-        ->except(['show'])
-        ->names([
-            'index'   => 'admin.flashcards.index',
-            'create'  => 'admin.flashcards.create',
-            'store'   => 'admin.flashcards.store',
-            'edit'    => 'admin.flashcards.edit',
-            'update'  => 'admin.flashcards.update',
-            'destroy' => 'admin.flashcards.destroy',
-        ]);
-        Route::resource('folio-slides', FolioSlideController::class)
-        ->except(['index', 'show'])
-        ->names('admin.folio-slides');
+        Route::post('/upload-image', ImageUploadController::class)->name('upload-image');
     });
-
-// routes/web.php
-Route::post('/admin/upload-image', function (Request $request) {
-    $path = $request->file('image')->store('editor', 'public');
-    return response()->json(['url' => asset('storage/' . $path)]);
-})->middleware(['auth', 'admin']);
-
-
-
-
-
-

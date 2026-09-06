@@ -39,7 +39,7 @@ export default function Signup() {
            <div className=" max-w-md mx-auto"> 
            <div className="mb-5 font-SpecHeadline text-white text-center font-extralight letters ]">
             <h1 className="text-center   text-4xl  ">SIGN UP</h1>
-            <p className=" text-[15px] mt-2">A Member ? <Link href="/Login" className="font-bold">Login</Link></p>
+            <p className=" text-[15px] mt-2">A Member ? <Link href="/login" className="font-bold">Login</Link></p>
            </div>
            <div className=" bg-white rounded-xl p-16 space-y-5 m-10 sm:w-full sm:mx-auto">
 
@@ -99,7 +99,7 @@ export default function Signup() {
         <hr />
         <div className="w-full  flex gap-0 space-x-2 text-[10px] justify-center items-center">
             <input type="checkbox" id="terms"  checked={agreed} onChange={(e)=>setAgreed(e.target.checked)} className="w-2 bg-red-400"/>
-            <label htmlFor="option1" className=" text-sm cursor-pointer  p-2  peer-checked:bg-primary">Agree to <span className="text-primary"><Link href="/Terms&Conditions">terms & conditions</Link></span></label>
+            <label htmlFor="option1" className=" text-sm cursor-pointer  p-2  peer-checked:bg-primary">Agree to <span className="text-primary"><Link href="/Terms">terms & conditions</Link></span></label>
         </div>
       
       <button disabled={processing || !agreed } className={`bg-primary w-full text-white px-4 py-2 font-SpecHeadline rounded-md shadow-xl ${agreed ? "bg-primary text-white hover:bg-primary/90" :"bg-primary/50 text-white-600 cursor-not-allowed"}`}>

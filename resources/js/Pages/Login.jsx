@@ -61,7 +61,7 @@ export default function Login() {
            <div className=" max-w-md mx-auto"> 
            <div className="mb-5 font-SpecHeadline text-white text-center font-extralight letters ]">
             <h1 className="text-center   text-4xl  ">LOGIN</h1>
-            <p className=" text-[15px] mt-2">Not A Member ? <Link href="/Signup" className="font-bold">Signup</Link></p>
+            <p className=" text-[15px] mt-2">Not A Member ? <Link href="/signup" className="font-bold">Signup</Link></p>
            </div>
            <div className=" bg-white rounded-xl p-16 space-y-5 m-10 sm:w-full sm:mx-auto">
 

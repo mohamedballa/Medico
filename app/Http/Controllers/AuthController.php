@@ -3,92 +3,72 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class AuthController extends Controller
 {
-    public function showSignup()
+    public function showSignup(): Response
     {
         return Inertia::render('Signup');
     }
 
-    public function signup(Request $request)
+    public function signup(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password, 
-        ]);
+        // The "hashed" cast on User handles password hashing.
+        $user = User::create($validated);
 
-        Auth::login($user);
-
-        // queue verification email
         $user->sendEmailVerificationNotification();
-        // Logout immediately (in case it auto-logs in)
-           Auth::logout();
-        // send to verification notice
-        return redirect()->route('verification.notice', ['email' => $user->email]);
 
-       
+        return redirect()->route('verification.notice', ['email' => $user->email]);
     }
 
-    public function showLogin()
+    public function showLogin(): Response
     {
         return Inertia::render('Login');
     }
 
-    public function login(Request $request)
+    public function login(Request $request): RedirectResponse
     {
-       $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
-        $remember = $request->has('remember');
-        
-        $user = \App\Models\User::where('email', $request->email)->first();
+        $user = User::where('email', $credentials['email'])->first();
 
-        // dd([
-        //     'input_password' => $request->password,
-        //     'db_password' => $user->password,
-        //     'check' => Hash::check($request->password, $user->password),
-        // ]);
-
-
-        if (!$user) {
-            // Email not found
-            return back()->withErrors(['email' => 'This email does not exist.']);
-        }
-    
-        if (!Hash::check($request->password, $user->password)) {
-            // Password wrong
-            return back()->withErrors(['password' => 'Wrong password.']);
+        // A single generic error for both "unknown email" and "wrong password"
+        // prevents account enumeration.
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+            return back()
+                ->withErrors(['email' => __('auth.failed')])
+                ->onlyInput('email');
         }
 
-        if (!$user->hasVerifiedEmail()) {
-            return redirect()->route('verification.notice')
+        if (! $user->hasVerifiedEmail()) {
+            return redirect()
+                ->route('verification.notice', ['email' => $user->email])
                 ->with('status', 'Please verify your email before logging in.');
         }
-
 
         Auth::login($user, $request->boolean('remember'));
         $request->session()->regenerate();
 
-        return redirect()->intended('dashboard');
+        return redirect()->intended(route('dashboard'));
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
-       
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
