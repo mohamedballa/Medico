@@ -18,13 +18,15 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * The attributes that are mass assignable.
      *
+     * `is_admin` is intentionally NOT fillable: privilege escalation via
+     * mass assignment must be impossible. Grant admin with `php artisan medico:make-admin`.
+     *
      * @var list<string>
      */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'is_admin',
     ];
 
     /**

@@ -41,8 +41,8 @@ export default function Nav(){
                                     <NavLink href="/dashboard" className="hover:text-primary">Dashboard</NavLink>
                                     <Link href="/logout" method="post" as="button" className="hover:text-primary mt-4">Logout</Link>
                                     </>):(<>
-                                <NavLink className="hover:text-primary" href="/Signup" >Signup</NavLink>
-                                <NavLink className="hover:text-primary" href="/Login" >Login</NavLink>
+                                <NavLink className="hover:text-primary" href="/signup" >Signup</NavLink>
+                                <NavLink className="hover:text-primary" href="/login" >Login</NavLink>
                             </>)}</div>
 
                         </div>
@@ -78,8 +78,8 @@ export default function Nav(){
                                     <NavLink href="/dashboard" className="hover:text-primary " onClick={handleClose} >Dashboard</NavLink>
                                     <Link href="/logout" method="post" as="button" className="hover:text-primary mt-4 ">Logout</Link>
                                     </>):(<>
-                                <NavLink className="hover:text-primary mt-4" href="/Signup" onClick={handleClose} >Signup</NavLink>
-                                <NavLink className="hover:text-primary mt-4" href="/Login" onClick={handleClose} >Login</NavLink>
+                                <NavLink className="hover:text-primary mt-4" href="/signup" onClick={handleClose} >Signup</NavLink>
+                                <NavLink className="hover:text-primary mt-4" href="/login" onClick={handleClose} >Login</NavLink>
                             </>)} 
                                     </div>
                                 </div>

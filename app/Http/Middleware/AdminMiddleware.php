@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
@@ -17,11 +16,13 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check() || !Auth::user()->is_admin) {
+        if (! $request->user()?->is_admin) {
             return Inertia::render('Error', [
-                'message' => 'Access denied. Admins only.'
-            ])->toResponse($request)->setStatusCode(403);
+                'status' => Response::HTTP_FORBIDDEN,
+                'message' => 'Access denied. Admins only.',
+            ])->toResponse($request)->setStatusCode(Response::HTTP_FORBIDDEN);
         }
+
         return $next($request);
     }
 }

@@ -63,7 +63,7 @@ export default function Home() {
                      <img src={Subscribe} alt="Button" className="absolute top-[55%] left-[33%] w-32 "  />
                     </Link>
 
-                    <Link href="/Signup">
+                    <Link href="/signup">
                      <img src={Signup} alt="Button" className="absolute bottom-[10%] left-[36%]   w-28"  />
                     </Link>
                 </div>
@@ -111,7 +111,7 @@ export default function Home() {
                      <img src={Subscribe} alt="Button" className="absolute top-[77%] left-[20%] w-32 "  />
                     </Link>
 
-                    <Link href="/Signup">
+                    <Link href="/signup">
                      <img src={Signup} alt="Button" className="absolute bottom-[15%] left-[65%]  w-28"  />
                     </Link>
                 </div>
@@ -158,7 +158,7 @@ export default function Home() {
                      <img src={Subscribe} alt="Button" className="absolute top-[80%] left-[22%] w-40 "  />
                     </Link>
 
-                    <Link href="/Signup">
+                    <Link href="/signup">
                      <img src={Signup} alt="Button" className="absolute bottom-[12%] left-[66%]  w-32"  />
                     </Link>
                 </div>
