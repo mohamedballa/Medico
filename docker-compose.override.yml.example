@@ -1,0 +1,12 @@
+# Local-only developer tooling. Copy to docker-compose.override.yml (git-ignored);
+# Docker Compose merges it automatically on `sail up` / `docker compose up`.
+services:
+    adminer:
+        image: adminer
+        restart: unless-stopped
+        ports:
+            - '${ADMINER_PORT:-8081}:8080'
+        networks:
+            - sail
+        depends_on:
+            - pgsql
