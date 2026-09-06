@@ -28,12 +28,13 @@ class MedicoSeeder extends Seeder
     public function run(): void
     {
 
-        // $testUser = User::create([
-        //     'name' => 'Test Admin',
-        //     'email' => 'admin@example.com',
-        //     'password' => 'password', 
-        //     'is_admin' => True,
-        //     ]);
+        $testUser = User::create([
+            'name' => 'Test Admin',
+            'email' => 'admin@example.com',
+            'password' => 'password',
+            'is_admin' => true,
+            'email_verified_at' => now(),
+        ]);
 
        // Subjects (3)
        $subject1 = Subject::create([
@@ -280,7 +281,7 @@ class MedicoSeeder extends Seeder
 
     // User Progress (assume user_id 1 exists; 3 entries)
     UserModuleProgress::create([
-        'user_id' => 1,
+        'user_id' => $testUser->id,
         'module_id' => $module1_1_1->id,
         'completed' => true,
         'completion_date' => now(),
@@ -288,13 +289,13 @@ class MedicoSeeder extends Seeder
         'score' => 95.5,
     ]);
     UserModuleProgress::create([
-        'user_id' => 1,
+        'user_id' => $testUser->id,
         'module_id' => $module1_1_2->id,
         'completed' => false,
         'progress_percentage' => 50,
     ]);
     UserModuleProgress::create([
-        'user_id' => 1,
+        'user_id' => $testUser->id,
         'module_id' => $module1_1_1->id,
         'completed' => true,
         'completion_date' => now()->subDay(),
@@ -304,7 +305,7 @@ class MedicoSeeder extends Seeder
 
     // User Streaks (1 per user)
     UserStreak::create([
-        'user_id' => 1,
+        'user_id' => $testUser->id,
         'current_streak' => 2,
         'longest_streak' => 5,
         'last_completion_date' => now()->subDay(),
