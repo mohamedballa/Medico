@@ -31,15 +31,15 @@ Route::inertia('/Terms', 'Terms&Conditions')->name('terms');
 |--------------------------------------------------------------------------
 | Authentication
 |--------------------------------------------------------------------------
-| Credential-accepting endpoints are rate limited (6 attempts / minute / IP)
-| to blunt brute-force and enumeration attempts.
+| Credential-accepting endpoints use the "auth" limiter (AppServiceProvider):
+| 6/min per email+IP and 60/min per IP, so shared campus NAT is not punished.
 */
 
 Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
-Route::post('/signup', [AuthController::class, 'signup'])->middleware('throttle:6,1');
+Route::post('/signup', [AuthController::class, 'signup'])->middleware('throttle:auth');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,1');
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:auth');
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
@@ -50,20 +50,20 @@ Route::get('/dashboard', fn () => Inertia::render('Dashboard'))
 // Password reset
 Route::get('/forgot-password', [PasswordResetController::class, 'requestForm'])->name('password.request');
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])
-    ->middleware('throttle:6,1')
+    ->middleware('throttle:auth')
     ->name('password.email');
 Route::get('/reset-password/{token}', [PasswordResetController::class, 'resetForm'])->name('password.reset');
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])
-    ->middleware('throttle:6,1')
+    ->middleware('throttle:auth')
     ->name('password.update');
 
 // Email verification (links are temporary signed URLs, see VerifyEmailNotification)
 Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');
 Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
-    ->middleware(['signed', 'throttle:6,1'])
+    ->middleware(['signed', 'throttle:60,1'])
     ->name('verification.verify');
 Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])
-    ->middleware('throttle:6,1')
+    ->middleware('throttle:auth')
     ->name('verification.resend');
 
 /*
