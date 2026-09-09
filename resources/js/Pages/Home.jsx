@@ -33,7 +33,7 @@ export default function Home() {
                    
                     <img src={Hero} className="w-full h-auto object-contain" alt="Hero" />
                     
-                    <Link href="/Demo">
+                    <Link href="/signup">
                         <img src={MHButton} alt="Button" className="absolute bottom-12 left-9 w-32 " />
                     </Link>
                     
@@ -50,7 +50,7 @@ export default function Home() {
                 <div className="relative w-full">
                     <img  src={MSyllabus} alt="Module" className="" />
 
-                    <Link href="/Demo">
+                    <Link href="/signup">
                      <img src={MButton} alt="Button" className="absolute bottom-[7%] left-[33%] w-32 "  />
                     </Link>
                 </div>
@@ -59,7 +59,7 @@ export default function Home() {
 
                 <div className="relative w-full">
                     <img src={Subscribtions} alt="subscritptions" className=" mb-20"  />
-                    <Link href="/Subscribe">
+                    <Link href="/signup">
                      <img src={Subscribe} alt="Button" className="absolute top-[55%] left-[33%] w-32 "  />
                     </Link>
 
@@ -81,7 +81,7 @@ export default function Home() {
                    
                     <img src={tabletHero} className="w-full h-auto object-contain" alt="Hero" />
                     
-                    <Link href="/Demo">
+                    <Link href="/signup">
                         <img src={MHButton} alt="Button" className="absolute bottom-12 left-12 w-36 " />
                     </Link>
                     
@@ -98,7 +98,7 @@ export default function Home() {
                 <div className="relative w-full">
                     <img  src={tabletMSyllabus} alt="Module" className="" />
 
-                    <Link href="/Demo">
+                    <Link href="/signup">
                      <img src={MButton} alt="Button" className="absolute bottom-[15%] left-[64%] w-24 "  />
                     </Link>
                 </div>
@@ -107,7 +107,7 @@ export default function Home() {
 
                 <div className="relative w-full">
                     <img src={tabletSubscribtions} alt="subscritptions" className=" mb-20"  />
-                    <Link href="/Subscribe">
+                    <Link href="/signup">
                      <img src={Subscribe} alt="Button" className="absolute top-[77%] left-[20%] w-32 "  />
                     </Link>
 
@@ -128,7 +128,7 @@ export default function Home() {
                    
                     <img src={DHero} className="w-full h-auto object-contain" alt="Hero" />
                     
-                    <Link href="/Demo">
+                    <Link href="/signup">
                         <img src={MHButton} alt="Button" className="absolute bottom-16 left-20 w-48 " />
                     </Link>
                     
@@ -145,7 +145,7 @@ export default function Home() {
                 <div className="relative w-full">
                     <img  src={DMSyllabus} alt="Module" className="" />
 
-                    <Link href="/Demo">
+                    <Link href="/signup">
                      <img src={MButton} alt="Button" className="absolute bottom-[13%] left-[63%] w-40 "  />
                     </Link>
                 </div>
@@ -154,7 +154,7 @@ export default function Home() {
 
                 <div className="relative w-full">
                     <img src={tabletSubscribtions} alt="subscritptions" className=" mb-20"  />
-                    <Link href="/Subscribe">
+                    <Link href="/signup">
                      <img src={Subscribe} alt="Button" className="absolute top-[80%] left-[22%] w-40 "  />
                     </Link>
 

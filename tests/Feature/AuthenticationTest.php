@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Notifications\VerifyEmailNotification;
+use App\Providers\AppServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
@@ -48,13 +49,42 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_login_is_rate_limited_to_six_attempts_per_minute(): void
+    public function test_login_is_rate_limited_per_email_and_ip(): void
     {
-        foreach (range(1, 6) as $_) {
-            $this->post('/login', ['email' => 'nobody@example.com', 'password' => 'x'])->assertStatus(302);
+        foreach (range(1, AppServiceProvider::AUTH_PER_ACCOUNT_LIMIT) as $_) {
+            $this->post('/login', ['email' => 'Target@Example.com', 'password' => 'x'])->assertStatus(302);
         }
 
-        $this->post('/login', ['email' => 'nobody@example.com', 'password' => 'x'])->assertStatus(429);
+        // Same account, case-insensitive email: blocked.
+        $this->post('/login', ['email' => 'target@example.com', 'password' => 'x'])->assertStatus(429);
+
+        // Another student behind the same NAT (same IP, different email): NOT blocked.
+        $this->post('/login', ['email' => 'classmate@example.com', 'password' => 'x'])->assertStatus(302);
+    }
+
+    public function test_login_has_a_looser_per_ip_ceiling(): void
+    {
+        foreach (range(1, AppServiceProvider::AUTH_PER_IP_LIMIT) as $i) {
+            $this->post('/login', ['email' => "student{$i}@example.com", 'password' => 'x'])->assertStatus(302);
+        }
+
+        $this->post('/login', ['email' => 'one-more@example.com', 'password' => 'x'])->assertStatus(429);
+    }
+
+    public function test_signup_and_forgot_password_share_the_auth_limiter(): void
+    {
+        Notification::fake();
+
+        foreach (range(1, AppServiceProvider::AUTH_PER_ACCOUNT_LIMIT) as $_) {
+            $this->post('/forgot-password', ['email' => 'victim@example.com'])->assertStatus(302);
+        }
+        $this->post('/forgot-password', ['email' => 'victim@example.com'])->assertStatus(429);
+
+        $signup = ['name' => 'A', 'password' => 'secret123', 'password_confirmation' => 'secret123'];
+        foreach (range(1, AppServiceProvider::AUTH_PER_ACCOUNT_LIMIT) as $_) {
+            $this->post('/signup', [...$signup, 'email' => 'spam@example.com'])->assertStatus(302);
+        }
+        $this->post('/signup', [...$signup, 'email' => 'spam@example.com'])->assertStatus(429);
     }
 
     public function test_signup_cannot_mass_assign_admin(): void

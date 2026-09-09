@@ -2,312 +2,148 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use App\Models\User;
+use App\Models\Chapter;
+use App\Models\Flashcard;
+use App\Models\Folio;
+use App\Models\Module;
+use App\Models\Question;
 use App\Models\Subject;
 use App\Models\Topic;
-use App\Models\Chapter;
-use App\Models\Module;
-use App\Models\Folio;
-use App\Models\FolioSlide;
-use App\Models\Question;
-use App\Models\QuestionChoice;
-use App\Models\Flashcard;
-use App\Models\UserModuleProgress;
-use App\Models\UserStreak;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-
+/**
+ * Sample curriculum for local development.
+ *
+ * Deliberately seeds no users, progress or streaks: admins are provisioned with
+ * `php artisan medico:make-admin {email}` and progress is written by the app.
+ */
 class MedicoSeeder extends Seeder
-
 {
-    /**
-     * Run the database seeds.
-     */
+    private const EDITOR_VERSION = '2.31.0';
+
     public function run(): void
     {
+        DB::transaction(function () {
+            $anatomy = $this->subject('Anatomy', 'Study of body structure', 1);
+            $physiology = $this->subject('Physiology', 'Study of body functions', 2);
+            $biochemistry = $this->subject('Biochemistry', 'Chemical processes in living organisms', 3);
 
-        // $testUser = User::create([
-        //     'name' => 'Test Admin',
-        //     'email' => 'admin@example.com',
-        //     'password' => 'password', 
-        //     'is_admin' => True,
-        //     ]);
+            $musculoskeletal = $this->topic($anatomy, 'Musculoskeletal', 'Bones and muscles', 1);
+            $this->topic($anatomy, 'Nervous System', 'Brain and nerves', 2);
 
-       // Subjects (3)
-       $subject1 = Subject::create([
-        'name' => 'Anatomy',
-        'description' => 'Study of body structure',
-        'order' => 1,
-    ]);
-    $subject2 = Subject::create([
-        'name' => 'Physiology',
-        'description' => 'Study of body functions',
-        'order' => 2,
-    ]);
-    $subject3 = Subject::create([
-        'name' => 'Biochemistry',
-        'description' => 'Chemical processes in living organisms',
-        'order' => 3,
-    ]);
+            $cardiovascular = $this->topic($physiology, 'Cardiovascular', 'Heart and blood vessels', 1);
+            $this->topic($physiology, 'Respiratory', 'Lungs and breathing', 2);
 
+            $enzymology = $this->topic($biochemistry, 'Enzymology', 'Enzyme structure and function', 1);
+            $this->topic($biochemistry, 'Metabolic Pathways', 'Energy and biosynthesis', 2);
 
-    // 3. Topics (2 per subject)
-    $topic1_1 = Topic::create([
-        'subject_id' => $subject1->id,
-        'name' => 'Musculoskeletal',
-        'description' => 'Bones and muscles',
-        'order' => 1,
-    ]);
-    $topic1_2 = Topic::create([
-        'subject_id' => $subject1->id,
-        'name' => 'Nervous System',
-        'description' => 'Brain and nerves',
-        'order' => 2,
-    ]);
+            $skeletal = $this->chapter($musculoskeletal, 'Skeletal System', 1);
+            $this->chapter($musculoskeletal, 'Muscular System', 2);
+            $this->chapter($cardiovascular, 'Circulatory System', 1);
+            $this->chapter($cardiovascular, 'Respiratory System', 2);
+            $this->chapter($enzymology, 'Enzymes', 1);
+            $this->chapter($enzymology, 'Metabolism', 2);
 
-    $topic2_1 = Topic::create([
-        'subject_id' => $subject2->id,
-        'name' => 'Cardiovascular',
-        'description' => 'Heart and blood vessels',
-        'order' => 1,
-    ]);
-    $topic2_2 = Topic::create([
-        'subject_id' => $subject2->id,
-        'name' => 'Respiratory',
-        'description' => 'Lungs and breathing',
-        'order' => 2,
-    ]);
+            $upperLimb = $this->module($skeletal, 'Bones of Upper Limb', 1);
+            $this->module($skeletal, 'Bones of Lower Limb', 2);
 
-    $topic3_1 = Topic::create([
-        'subject_id' => $subject3->id,
-        'name' => 'Enzymology',
-        'description' => 'Enzyme structure and function',
-        'order' => 1,
-    ]);
-    $topic3_2 = Topic::create([
-        'subject_id' => $subject3->id,
-        'name' => 'Metabolic Pathways',
-        'description' => 'Energy and biosynthesis',
-        'order' => 2,
-    ]);
+            $this->seedFolios($upperLimb);
+            $this->seedQuestions($upperLimb);
+            $this->seedFlashcards($upperLimb);
+        });
+    }
 
+    private function seedFolios(Module $module): void
+    {
+        $intro = Folio::create(['module_id' => $module->id, 'title' => 'Intro to Bones', 'order' => 1]);
+        $intro->slides()->createMany([
+            ['content' => $this->document('Slide 1: Bone structure'), 'order' => 1],
+            ['content' => $this->document('Slide 2: Functions of the skeleton'), 'order' => 2],
+        ]);
 
-    // Chapters (2 per subject)
-    $chapter1_1 = Chapter::create([
-        'topic_id' => $topic1_1->id,
-        'name' => 'Skeletal System',
-        'order' => 1,
-    ]);
-    $chapter1_2 = Chapter::create([
-        'topic_id' => $topic1_1->id,
-        'name' => 'Muscular System',
-        'order' => 2,
-    ]);
-    $chapter2_1 = Chapter::create([
-        'topic_id' => $topic2_1->id,
-        'name' => 'Circulatory System',
-        'order' => 1,
-    ]);
-    $chapter2_2 = Chapter::create([
-        'topic_id' => $topic2_1->id,
-        'name' => 'Respiratory System',
-        'order' => 2,
-    ]);
-    $chapter3_1 = Chapter::create([
-        'topic_id' => $topic3_1->id,
-        'name' => 'Enzymes',
-        'order' => 1,
-    ]);
-    $chapter3_2 = Chapter::create([
-        'topic_id' => $topic3_1->id,
-        'name' => 'Metabolism',
-        'order' => 2,
-    ]);
+        $advanced = Folio::create(['module_id' => $module->id, 'title' => 'Advanced Bones', 'order' => 2]);
+        $advanced->slides()->createMany([
+            ['content' => $this->document('Slide 1: Ossification'), 'order' => 1],
+            ['content' => $this->document('Slide 2: Quiz preparation'), 'order' => 2],
+        ]);
+    }
 
-    // Modules (2 for the first chapter, for brevity)
-    $module1_1_1 = Module::create([
-        'chapter_id' => $chapter1_1->id,
-        'name' => 'Bones of Upper Limb',
-        'order' => 1,
-    ]);
-    $module1_1_2 = Module::create([
-        'chapter_id' => $chapter1_1->id,
-        'name' => 'Bones of Lower Limb',
-        'order' => 2,
-    ]);
+    private function seedQuestions(Module $module): void
+    {
+        $this->mcq($module, 1, 'What is the longest bone in the human body?', 'A', 'The femur is the longest and strongest bone.', [
+            'A' => 'Femur', 'B' => 'Humerus', 'C' => 'Tibia', 'D' => 'Radius',
+        ]);
+        $this->mcq($module, 2, 'Which bone is found in the upper arm?', 'B', 'The humerus extends from shoulder to elbow.', [
+            'A' => 'Femur', 'B' => 'Humerus', 'C' => 'Tibia', 'D' => 'Fibula',
+        ]);
+        $this->mcq($module, 3, 'Which bone is in the lower leg?', 'C', 'The tibia is the weight-bearing bone of the lower leg.', [
+            'A' => 'Ulna', 'B' => 'Radius', 'C' => 'Tibia', 'D' => 'Clavicle',
+        ]);
 
-    // Folios and Slides (2 folios per module, 2 slides each)
-    $folio1 = Folio::create([
-        'module_id' => $module1_1_1->id,
-        'title' => 'Intro to Bones',
-        'order' => 1,
-    ]);
-    FolioSlide::create([
-        'folio_id' => $folio1->id,
-        'content' => ['text' => 'Slide 1: Bone structure'],
-        'order' => 1,
-    ]);
-    FolioSlide::create([
-        'folio_id' => $folio1->id,
-        'content' => ['text' => 'Slide 2: Functions', 'interactive' => ['type' => 'fill_in_blank', 'prompt' => 'The bone is called ___.', 'answer' => 'humerus']],
-        'order' => 2,
-    ]);
-    $folio2 = Folio::create([
-        'module_id' => $module1_1_1->id,
-        'title' => 'Advanced Bones',
-        'order' => 2,
-    ]);
-    FolioSlide::create([
-        'folio_id' => $folio2->id,
-        'content' => ['text' => 'Slide 1: Details'],
-        'order' => 1,
-    ]);
-    FolioSlide::create([
-        'folio_id' => $folio2->id,
-        'content' => ['text' => 'Slide 2: Quiz prep'],
-        'order' => 2,
-    ]);
+        Question::create([
+            'module_id' => $module->id,
+            'question_text' => $this->document('The clavicle is part of the upper limb.'),
+            'type' => Question::TYPE_TRUE_FALSE,
+            'correct_answer' => 'true',
+            'explanation' => $this->document('The clavicle forms part of the pectoral girdle.'),
+            'order' => 4,
+        ]);
+    }
 
-    // Questions and Choices (3 questions per module, each MCQ with 4 choices)
-    $question1 = Question::create([
-        'module_id' => $module1_1_1->id,
-        'question_text' => 'What is the longest bone?',
-        'type' => 'mcq',
-        'correct_answer' => 'A',
-        'explanation' => 'Femur is the longest.',
-        'order' => 1,
-    ]);
-    QuestionChoice::create([
-        'question_id' => $question1->id,
-        'choice_label' => 'A',
-        'choice_text' => 'Femur',
-    ]);
-    QuestionChoice::create([
-        'question_id' => $question1->id,
-        'choice_label' => 'B',
-        'choice_text' => 'Humerus',
-    ]);
-    QuestionChoice::create([
-        'question_id' => $question1->id,
-        'choice_label' => 'C',
-        'choice_text' => 'Tibia',
-    ]);
-    QuestionChoice::create([
-        'question_id' => $question1->id,
-        'choice_label' => 'D',
-        'choice_text' => 'Radius',
-    ]);
+    private function seedFlashcards(Module $module): void
+    {
+        Flashcard::insert([
+            ['module_id' => $module->id, 'front' => 'Longest bone?', 'back' => 'Femur', 'hint' => null, 'order' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['module_id' => $module->id, 'front' => 'Arm bone?', 'back' => 'Humerus', 'hint' => 'Upper arm', 'order' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['module_id' => $module->id, 'front' => 'Leg bone?', 'back' => 'Tibia', 'hint' => 'Weight-bearing', 'order' => 3, 'created_at' => now(), 'updated_at' => now()],
+        ]);
+    }
 
-    $question2 = Question::create([
-        'module_id' => $module1_1_1->id,
-        'question_text' => 'Bone in arm?',
-        'type' => 'mcq',
-        'correct_answer' => 'B',
-        'explanation' => 'Humerus is in the upper arm.',
-        'order' => 2,
-    ]);
-    QuestionChoice::create([
-        'question_id' => $question2->id,
-        'choice_label' => 'A',
-        'choice_text' => 'Femur',
-    ]);
-    QuestionChoice::create([
-        'question_id' => $question2->id,
-        'choice_label' => 'B',
-        'choice_text' => 'Humerus',
-    ]);
-    QuestionChoice::create([
-        'question_id' => $question2->id,
-        'choice_label' => 'C',
-        'choice_text' => 'Tibia',
-    ]);
-    QuestionChoice::create([
-        'question_id' => $question2->id,
-        'choice_label' => 'D',
-        'choice_text' => 'Fibula',
-    ]);
+    /** @param  array<string, string>  $choices  label => text */
+    private function mcq(Module $module, int $order, string $text, string $answer, string $explanation, array $choices): void
+    {
+        $question = Question::create([
+            'module_id' => $module->id,
+            'question_text' => $this->document($text),
+            'type' => Question::TYPE_MCQ,
+            'correct_answer' => $answer,
+            'explanation' => $this->document($explanation),
+            'order' => $order,
+        ]);
 
-    $question3 = Question::create([
-        'module_id' => $module1_1_1->id,
-        'question_text' => 'Leg bone?',
-        'type' => 'mcq',
-        'correct_answer' => 'C',
-        'explanation' => 'Tibia is in the lower leg.',
-        'order' => 3,
-    ]);
-    QuestionChoice::create([
-        'question_id' => $question3->id,
-        'choice_label' => 'A',
-        'choice_text' => 'Ulna',
-    ]);
-    QuestionChoice::create([
-        'question_id' => $question3->id,
-        'choice_label' => 'B',
-        'choice_text' => 'Radius',
-    ]);
-    QuestionChoice::create([
-        'question_id' => $question3->id,
-        'choice_label' => 'C',
-        'choice_text' => 'Tibia',
-    ]);
-    QuestionChoice::create([
-        'question_id' => $question3->id,
-        'choice_label' => 'D',
-        'choice_text' => 'Clavicle',
-    ]);
+        $question->choices()->createMany(
+            collect($choices)->map(fn ($text, $label) => ['choice_label' => $label, 'choice_text' => $text])->values()->all()
+        );
+    }
 
-    // Flashcards (3 per module)
-    Flashcard::create([
-        'module_id' => $module1_1_1->id,
-        'front' => 'Longest bone?',
-        'back' => 'Femur',
-        'order' => 1,
-    ]);
-    Flashcard::create([
-        'module_id' => $module1_1_1->id,
-        'front' => 'Arm bone?',
-        'back' => 'Humerus',
-        'order' => 2,
-    ]);
-    Flashcard::create([
-        'module_id' => $module1_1_1->id,
-        'front' => 'Leg bone?',
-        'back' => 'Tibia',
-        'order' => 3,
-    ]);
+    /** Minimal Editor.js document with a single paragraph block. */
+    private function document(string $text): array
+    {
+        return [
+            'time' => now()->getTimestampMs(),
+            'blocks' => [['type' => 'paragraph', 'data' => ['text' => $text]]],
+            'version' => self::EDITOR_VERSION,
+        ];
+    }
 
-    // User Progress (assume user_id 1 exists; 3 entries)
-    UserModuleProgress::create([
-        'user_id' => 1,
-        'module_id' => $module1_1_1->id,
-        'completed' => true,
-        'completion_date' => now(),
-        'progress_percentage' => 100,
-        'score' => 95.5,
-    ]);
-    UserModuleProgress::create([
-        'user_id' => 1,
-        'module_id' => $module1_1_2->id,
-        'completed' => false,
-        'progress_percentage' => 50,
-    ]);
-    UserModuleProgress::create([
-        'user_id' => 1,
-        'module_id' => $module1_1_1->id,
-        'completed' => true,
-        'completion_date' => now()->subDay(),
-        'progress_percentage' => 100,
-        'score' => 80.0,
-    ]);
+    private function subject(string $name, string $description, int $order): Subject
+    {
+        return Subject::create(['name' => $name, 'description' => $description, 'order' => $order]);
+    }
 
-    // User Streaks (1 per user)
-    UserStreak::create([
-        'user_id' => 1,
-        'current_streak' => 2,
-        'longest_streak' => 5,
-        'last_completion_date' => now()->subDay(),
-    ]);
+    private function topic(Subject $subject, string $name, string $description, int $order): Topic
+    {
+        return Topic::create(['subject_id' => $subject->id, 'name' => $name, 'description' => $description, 'order' => $order]);
+    }
+
+    private function chapter(Topic $topic, string $name, int $order): Chapter
+    {
+        return Chapter::create(['topic_id' => $topic->id, 'name' => $name, 'order' => $order]);
+    }
+
+    private function module(Chapter $chapter, string $name, int $order): Module
+    {
+        return Module::create(['chapter_id' => $chapter->id, 'name' => $name, 'order' => $order]);
     }
 }

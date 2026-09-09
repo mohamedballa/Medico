@@ -49,14 +49,14 @@ class ModuleController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'chapter_id' => 'required|exists:chapters,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'order' => 'required|integer'
         ]);
 
-        Module::create($request->all());
+        Module::create($validated);
 
         return redirect()->route('admin.modules.index')
             ->with('success', 'Module created successfully.');
@@ -75,14 +75,14 @@ class ModuleController extends Controller
 
     public function update(Request $request, Module $module)
     {
-        $request->validate([
+        $validated = $request->validate([
             'chapter_id' => 'required|exists:chapters,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'order' => 'required|integer'
         ]);
 
-        $module->update($request->all());
+        $module->update($validated);
 
         return redirect()->route('admin.modules.index')
             ->with('success', 'Module updated successfully.');
