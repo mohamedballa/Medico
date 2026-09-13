@@ -12,7 +12,7 @@ export default {
       white: "#fffffe",
 
       Headline: "#094067",
-      Paragraph: "5f6c7b",
+      Paragraph: "#5f6c7b",
 
       Button: "#3da9fc",
       Buttontext: "#fffffe",
@@ -35,8 +35,8 @@ export default {
 
     //  Illustration
       Stroke:"#094067",
-      White:"fffffe",
-      Hightlight:"#3da9fc",
+      White: "#fffffe",
+      Highlight:"#3da9fc",
       Secondary:"#90b4ce",
       Tertiary:"#ef4565",
 
