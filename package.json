@@ -26,6 +26,7 @@
         "@editorjs/table": "^2.4.5",
         "@inertiajs/react": "^2.1.6",
         "@vitejs/plugin-react": "^5.0.3",
+        "lucide-react": "^1.61.0",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",
         "ziggy-js": "^2.6.0"
